@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "216035418472",
+    "project_id": "auto-car-care-30970",
+    "storage_bucket": "auto-car-care-30970.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216035418472:android:1391783a1ab756edd7f6dd",
+        "android_client_info": {
+          "package_name": "com.example.auto_care"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARsG5fkEZVGCuSX_IkwqcNZ-qKqa5-nVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
