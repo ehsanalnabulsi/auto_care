@@ -17,3 +17,8 @@ class LoginErrorState extends LoginState {
   final Response? errorResponse;
   LoginErrorState(this.errorResponse);
 }
+class SendMobileTokenLoadingState extends LoginState {}
+
+class SendMobileTokenSuccessState extends LoginState {}
+
+class SendMobileTokenErrorState extends LoginState {}

@@ -1,4 +1,6 @@
 import 'package:auto_care/core/constant/imports.dart';
+import 'package:auto_care/core/constant/routes.dart';
+import 'package:auto_care/core/services/location.dart';
 import 'package:auto_care/view/users/car_owner/cubits/home_page_cubit/car_owner_home_page_cubit.dart';
 import 'package:auto_care/view/users/car_owner/screens/widgets/explore_parts_suppliers_text.dart';
 import 'package:auto_care/view/users/car_owner/screens/widgets/explore_workshops_text.dart';
@@ -7,6 +9,7 @@ import 'package:auto_care/view/users/car_owner/screens/widgets/workshops_card_bu
 import 'package:auto_care/view/widgets/app_progress_indicator.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:get/get.dart';
 
 class CarOwnerHomePage extends StatelessWidget {
   const CarOwnerHomePage({super.key});
@@ -46,6 +49,27 @@ class CarOwnerHomePage extends StatelessWidget {
               ));
         },
       ),
+    );
+  }
+}
+class MyFloatingActionButton extends StatelessWidget {
+  const MyFloatingActionButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        LocationService.getCurrentLocation().then((value) {
+          print(value);
+          Get.toNamed(CarOwnerRoutes.towCarRequest);
+        });
+      },
+      backgroundColor: AppColors.secondaryColor,
+      tooltip: 'Order tow car',
+      clipBehavior: Clip.none,
+      child: const Icon(Icons.car_crash_outlined),
     );
   }
 }

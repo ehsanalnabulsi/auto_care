@@ -29,5 +29,7 @@ const createMaintenanceRequestURL = 'CarMaintenance/';
 const citiesURL = 'City/';
 const towCarOrigins = 'TowOrigin/';
 const towCarBrands = 'TowBrand/';
+const toggleAvailabilityURL = 'toggleAvailability/';
+
 
 // Not working yet

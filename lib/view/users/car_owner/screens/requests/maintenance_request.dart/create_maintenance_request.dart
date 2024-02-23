@@ -63,79 +63,101 @@ class CreateMaintenanceRequest extends StatelessWidget {
               title: const Text('Request Maintenance'),
             ),
             body: SingleChildScrollView(
-              child: Form(
-                  child: ConditionalBuilder(
-                condition: state is GetUserCarsLoadingState,
-                builder: (context) => const Center(
-                  child: AppProgressIndicator(),
-                ),
-                fallback: (context) => Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SelectGroupCard(context,
-                          titles: cubit.userCarsNames,
-                          contents: cubit.userCarsPlatesNumber,
-                          imageSourceType: ImageSourceType.network,
-                          images: cubit.userCarsImages,
-                          titleTextColor: AppColors.primaryColor,
-                          contentTextColor: Colors.black,
-                          cardBackgroundColor: AppColors.greyColor,
-                          cardSelectedColor: AppColors.primaryColor,
-                          // radius: 5,
-                          ids: cubit.userCarsIds, onTap: (title, id) {
-                        cubit.getWorkshopsByCarModel(id);
-                        debugPrint(id);
-                        debugPrint(title);
-                      }),
-                    ),
-                    ConditionalBuilder(
-                        condition: state is GetWorkshopsSuccessState ||
-                            state is UpdateSelectedWorkshopState,
-                        builder: (context) => CustomDropDownButton(
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Must Selected';
-                                }
-                                return null;
-                              },
-                              hint: 'Select Workshop',
-                              onChanged: (value) {
-                                cubit.updateSelectedWorkshop(value);
-                              },
-                              items: cubit.workshopsNames,
-                            ),
-                        fallback: (context) => const SizedBox()),
-                    if (state is UpdateSelectedWorkshopState)
-                      CustomTextFormField(
-                        validator: (value) {
-                          return validateInput(value, 0, 255, 'description');
-                        },
-                        textInputType: TextInputType.text,
-                        controller: descriptionController,
-                        hintText: 'Maintenance Description',
-                        maxLines: 5,
-                        labelText: 'Maintenance Description',
+                child: Form(
+              child: ConditionalBuilder(
+                  condition: state is GetUserCarsSuccessState &&
+                      cubit.userCars.isEmpty,
+                  builder: (context) => Center(
+                        child: TextButton.icon(
+                          icon: const Icon(
+                            Icons.add,
+                            size: 35,
+                            color: AppColors.primaryColor,
+                          ),
+                          onPressed: () {
+                            Get.toNamed(CarOwnerRoutes.addNewCar);
+                          },
+                          label: const Text(
+                            'Dont Have Requests , Go to Add New Car',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        ),
                       ),
-                    ConditionalBuilder(
-                        condition:
-                            state is CreateMaintenanceRequestLoadingState,
-                        builder: (context) => const AppProgressIndicator(),
-                        fallback: (context) => PrimaryButton(
-                            onPressed: () {
-                              if (cubit.selectedCar != null &&
-                                  cubit.selectedWorkshop != null) {
-                                cubit.createMaintenanceRequest(
-                                    carId: cubit.selectedCar!,
-                                    workshopId: cubit.selectedWorkshop!,
-                                    description: descriptionController.text);
-                              }
-                            },
-                            textButton: 'Send Request'))
-                  ],
-                ),
-              )),
-            ),
+                  fallback: (context) => ConditionalBuilder(
+                        condition: state is GetUserCarsLoadingState,
+                        builder: (context) => const Center(
+                          child: AppProgressIndicator(),
+                        ),
+                        fallback: (context) => Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SelectGroupCard(context,
+                                  titles: cubit.userCarsNames,
+                                  contents: cubit.userCarsPlatesNumber,
+                                  imageSourceType: ImageSourceType.network,
+                                  images: cubit.userCarsImages,
+                                  titleTextColor: AppColors.primaryColor,
+                                  contentTextColor: Colors.black,
+                                  cardBackgroundColor: AppColors.greyColor,
+                                  cardSelectedColor: AppColors.primaryColor,
+                                  // radius: 5,
+                                  ids: cubit.userCarsIds, onTap: (title, id) {
+                                cubit.getWorkshopsByCarModel(id);
+                                debugPrint(id);
+                                debugPrint(title);
+                              }),
+                            ),
+                            ConditionalBuilder(
+                                condition: state is GetWorkshopsSuccessState ||
+                                    state is UpdateSelectedWorkshopState,
+                                builder: (context) => CustomDropDownButton(
+                                      validator: (value) {
+                                        if (value == null) {
+                                          return 'Must Selected';
+                                        }
+                                        return null;
+                                      },
+                                      hint: 'Select Workshop',
+                                      onChanged: (value) {
+                                        cubit.updateSelectedWorkshop(value);
+                                      },
+                                      items: cubit.workshopsNames,
+                                    ),
+                                fallback: (context) => const SizedBox()),
+                            if (state is UpdateSelectedWorkshopState)
+                              CustomTextFormField(
+                                validator: (value) {
+                                  return validateInput(
+                                      value, 0, 255, 'description');
+                                },
+                                textInputType: TextInputType.text,
+                                controller: descriptionController,
+                                hintText: 'Maintenance Description',
+                                maxLines: 5,
+                                labelText: 'Maintenance Description',
+                              ),
+                            ConditionalBuilder(
+                                condition: state
+                                    is CreateMaintenanceRequestLoadingState,
+                                builder: (context) =>
+                                    const AppProgressIndicator(),
+                                fallback: (context) => PrimaryButton(
+                                    onPressed: () {
+                                      if (cubit.selectedCar != null &&
+                                          cubit.selectedWorkshop != null) {
+                                        cubit.createMaintenanceRequest(
+                                            carId: cubit.selectedCar!,
+                                            workshopId: cubit.selectedWorkshop!,
+                                            description:
+                                                descriptionController.text);
+                                      }
+                                    },
+                                    textButton: 'Send Request'))
+                          ],
+                        ),
+                      )),
+            )),
           );
         },
       ),

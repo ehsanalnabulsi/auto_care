@@ -27,9 +27,10 @@ class DioHelper {
     return response;
   }
 
-  static Future<Response> patch(
-    String url, {
+  static Future<Response> patch({
+    required String url,
     Map<dynamic, dynamic>? data,
+    String? token,
   }) async {
     Response response = await dio.patch(url,
         data: data, options: Options(contentType: 'multipart/form-data'));

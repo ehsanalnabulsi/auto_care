@@ -7,7 +7,7 @@ import 'package:auto_care/data/models/maintenance_request.dart';
 import 'package:auto_care/data/models/onboarding_model.dart';
 import 'package:auto_care/view/users/car_owner/screens/Settings/car_owner_settings.dart';
 import 'package:auto_care/view/users/car_owner/screens/car_owner_cars/car_owner_cars_page.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/maintenance_request.dart/requests.dart';
+import 'package:auto_care/view/users/car_owner/screens/requests/requests.dart';
 import 'package:auto_care/view/users/car_owner/screens/home_page/car_owner_home_page.dart';
 import 'package:auto_care/view/users/workshop_owner/screens/current_cars_page/workshop_owner_cars_page.dart';
 import 'package:auto_care/view/users/workshop_owner/screens/home_page/workshop_owner_home_page.dart';

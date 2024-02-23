@@ -1,11 +1,9 @@
-
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/view/users/car_owner/cubits/request_tow_car/request_tow_car_cubit.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car/buttons_builder.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car/drawer.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car/get_current_location_button.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car/loading_page_builder.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car/map_widget_builder.dart';
+import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car_pages/request_tow_car_main_page/get_current_location_button.dart';
+import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car_pages/request_tow_car_main_page/loading_page_builder.dart';
+import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car_pages/request_tow_car_main_page/map_widget_builder.dart';
+import 'package:auto_care/view/widgets/primary_button.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -16,9 +14,6 @@ class RequestTowCarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MapController mapController = MapController();
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-    final GlobalKey<DrawerControllerState> drawerKey =
-        GlobalKey<DrawerControllerState>();
 
     return BlocProvider(
       create: (context) => RequestTowCarCubit()..getCurrentLocation(),
@@ -39,12 +34,12 @@ class RequestTowCarPage extends StatelessWidget {
                     builder: (context) =>
                         GetCurrentLocationButton(cubit: cubit),
                     fallback: (context) => Scaffold(
-                        key: scaffoldKey,
-                        drawer: TowCarOwnerHomePageDrawer(drawerKey: drawerKey),
+                        appBar: AppBar(
+                          title: Text('Request Tow Car'),
+                        ),
                         body: PageBodyBuilder(
                             mapController: mapController,
                             initialMarker: initialMarker,
-                            scaffoldKey: scaffoldKey,
                             cubit: cubit)),
                   ));
         },
@@ -58,13 +53,12 @@ class PageBodyBuilder extends StatelessWidget {
     super.key,
     required this.mapController,
     required this.initialMarker,
-    required this.scaffoldKey,
     required this.cubit,
   });
 
   final MapController mapController;
   final LatLng initialMarker;
-  final GlobalKey<ScaffoldState> scaffoldKey;
+
   final RequestTowCarCubit cubit;
 
   @override
@@ -74,19 +68,8 @@ class PageBodyBuilder extends StatelessWidget {
       children: [
         MapWidgetBuilder(
             mapController: mapController, initialMarker: initialMarker),
-        ButtonsBuilder(
-            scaffoldKey: scaffoldKey,
-            cubit: cubit,
-            mapController: mapController,
-            initialMarker: initialMarker)
+        PrimaryButton(onPressed: () {}, textButton: 'Order Now')
       ],
     );
   }
 }
-
-
-
-
-
-
-

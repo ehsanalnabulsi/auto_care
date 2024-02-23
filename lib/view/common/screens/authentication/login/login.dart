@@ -40,6 +40,7 @@ class LoginPage extends StatelessWidget {
                 ScaffoldMessenger.of(context)
                   ..hideCurrentSnackBar()
                   ..showSnackBar(snackBar);
+                LoginCubit.get(context).sendMobileToken();
               });
               switch (state.response.data['data']['user_type']) {
                 case 'Car Owner':

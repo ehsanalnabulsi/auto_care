@@ -38,7 +38,8 @@ class MyApp extends StatelessWidget {
         builder: (context, state) {
           var cubit = AppCubit.get(context);
           LocationService.checkPermission();
-          Widget route = const RegisterCarOwnerPage();
+
+          Widget route = const CarOwnerMainPage();
 
           // if (!isLoggedIn) {
           //   route = LoginPage();

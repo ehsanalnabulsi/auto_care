@@ -1,6 +1,8 @@
 import 'package:auto_care/core/constant/end_points.dart';
+import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,6 +19,27 @@ class LoginCubit extends Cubit<LoginState> {
     suffix =
         isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
     emit(LoginPasswordVisibilityState());
+  }
+
+  Future<String?> getToken() async {
+    return await FirebaseMessaging.instance.getToken();
+  }
+
+  void sendMobileToken() async {
+    emit(SendMobileTokenLoadingState());
+    String? mobileToken = await getToken();
+    print('mobile token : $mobileToken');
+    String? token = CacheHelper.getString(key: 'token');
+    FormData formData = FormData.fromMap({'mobileToken': mobileToken});
+    print('JWT $token');
+    final response = await DioHelper.postForm(sendMobileTokenURL,
+        token: 'JWT $token', data: formData);
+    print(response);
+    if (response.statusCode == 201) {
+      emit(SendMobileTokenSuccessState());
+    } else if (response.statusCode == 500) {
+      emit(SendMobileTokenErrorState());
+    }
   }
 
   void userLogin({

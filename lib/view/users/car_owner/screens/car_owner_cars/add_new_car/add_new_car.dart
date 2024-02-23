@@ -209,17 +209,17 @@ class AddNewCar extends StatelessWidget {
                           builder: (context) => const AppProgressIndicator(),
                           fallback: (context) => PrimaryButton(
                             onPressed: () {
-                              // if (formKey.currentState!.validate() &&
-                              //     cubit.pickedAvatar != null) {
-                              //   cubit.addNewCar(
-                              //       plateNumber: plateNumberController.text,
-                              //       carColor: carColor,
-                              //       carYear: carYearController.text,
-                              //       brand: cubit.selectedBrand,
-                              //       origin: cubit.selectedOrigin,
-                              //       model: cubit.selectedCarModel);
-                              // }
-                              cubit.sendMobileToken();
+                              if (formKey.currentState!.validate() &&
+                                  cubit.pickedAvatar != null) {
+                                cubit.addNewCar(
+                                    plateNumber: plateNumberController.text,
+                                    carColor: carColor,
+                                    carYear: carYearController.text,
+                                    brand: cubit.selectedBrand,
+                                    origin: cubit.selectedOrigin,
+                                    model: cubit.selectedCarModel);
+                              }
+                              
                             },
                             textButton: 'Add Car',
                           ),

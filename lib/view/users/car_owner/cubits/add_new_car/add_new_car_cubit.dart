@@ -99,27 +99,7 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
     }
   }
 
-  Future<String?> getToken() async {
-    return await FirebaseMessaging.instance.getToken();
-  }
-
-  void sendMobileToken() async {
-    emit(SendMobileTokenLoadingState());
-    String? mobileToken = await getToken();
-    print('mobile token : $mobileToken');
-    String? token = CacheHelper.getString(key: 'token');
-    FormData formData = FormData.fromMap({'mobileToken': mobileToken});
-    print('JWT $token');
-    final response = await DioHelper.postForm(sendMobileTokenURL,
-        token: 'JWT $token', data: formData);
-    print(response);
-    if (response.statusCode == 201) {
-      emit(SendMobileTokenSuccessState());
-    } else if (response.statusCode == 500) {
-      emit(SendMobileTokenErrorState());
-    }
-  }
-
+  
   void addNewCar({
     required String plateNumber,
     required String carColor,

@@ -80,10 +80,7 @@ class CreateMaintenanceRequestCubit
     emit(UpdateSelectedWorkshopState());
   }
 
-  void getToken() async {
-    String? phoneToken = await FirebaseMessaging.instance.getToken();
-    print(phoneToken);
-  }
+  
 
   Future<void> createMaintenanceRequest(
       {required int carId,
