@@ -1,3 +1,5 @@
+import 'package:auto_care/core/constant/imports.dart';
+
 const baseurl = 'http://10.0.2.2:8000/api/';
 //  Shared End Points
 
@@ -32,9 +34,18 @@ const cancelRequestURL = 'FinishedMaintenance/';
 const citiesURL = 'City/';
 const towCarOrigins = 'TowOrigin/';
 const towCarBrands = 'TowBrand/';
-const toggleAvailabilityURL = 'toggleAvailability/';
+const toggleAvailabilityURL = 'toggleAvailability';
 
 //        Workshop Owner End Points
 const getWorkshopOwnerRequestsURL = 'AddRequest/';
+const setVisitAppointmentURL = 'shopMaintenance/';
 const getCurrentCarsURL = 'CurrentCars/';
+
+//        PartsSupplier End Points
+
+const addNewProductURL = 'AssignProduct/';
+const getStoreBrands = 'brandStore/';
+const getProductsURL = 'AddProduct/';
+
+
 // Not working yet

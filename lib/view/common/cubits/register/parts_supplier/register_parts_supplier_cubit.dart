@@ -16,8 +16,8 @@ class RegisterPartsSupplierCubit extends Cubit<RegisterPartsSupplierState> {
   late List specialists;
   late List origins;
   late List<String> originsNames;
-  DateTime date = DateTime(15, 10, 2024,12);
   late int selectedOrigin;
+  DateTime date = DateTime(15, 10, 2024,12);
   late List brands;
   late List<String> brandsNames;
   late List<int> selectedBrands;

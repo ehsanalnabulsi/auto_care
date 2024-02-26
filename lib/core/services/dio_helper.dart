@@ -19,9 +19,10 @@ class DioHelper {
   }
 
   static Future<Response> get(String url,
-      {Map<String, dynamic>? query, String? token}) async {
+      {Map<String, dynamic>? query, String? token, FormData? formData}) async {
     Response response = await dio.get(url,
         queryParameters: query,
+        data: formData,
         options: Options(headers: {'Authorization': token ?? ''}));
     print(response);
     return response;

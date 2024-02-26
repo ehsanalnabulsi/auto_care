@@ -98,12 +98,11 @@ class WorkshopOwnerRequestsCubit extends Cubit<WorkshopOwnerRequestsState> {
     emit(SetVisitAppointmentLoadingState());
     String? token = CacheHelper.getString(key: 'token');
     FormData formData = FormData.fromMap({
-      'status': 3,
       'date': date,
     });
     try {
       final response = await DioHelper.patch(
-        url: '$cancelRequestURL$requestId/',
+        url: '$setVisitAppointmentURL$requestId/',
         token: 'JWT $token',
         formData: formData,
       );

@@ -44,9 +44,3 @@ class PickAvatarSuccessState extends AddNewCarState {}
 
 class PickAvatarErrorState extends AddNewCarState {}
 
-///////
-class SendMobileTokenLoadingState extends AddNewCarState {}
-
-class SendMobileTokenSuccessState extends AddNewCarState {}
-
-class SendMobileTokenErrorState extends AddNewCarState {}

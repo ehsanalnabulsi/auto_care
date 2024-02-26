@@ -21,14 +21,10 @@ class TowCarOwnerHomePageCubit extends Cubit<TowCarOwnerHomePageState> {
 
   bool isAvailable = false;
   void changeStatus() async {
-    String? token = await CacheHelper.getString(key: 'token');
+    String? token = CacheHelper.getString(key: 'token');
     isAvailable = !isAvailable;
-    FormData formData = FormData.fromMap({
-      'available': isAvailable,
-    });
-    final response = DioHelper.patch(
-        url: toggleAvailabilityURL, token: 'JWT $token', formData: formData);
-    print(response);
+    // DioHelper.patch(url: toggleAvailabilityURL, token: 'JWT $token');
+
     emit(ChangeStatusState());
   }
 }

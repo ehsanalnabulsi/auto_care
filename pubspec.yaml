@@ -62,6 +62,7 @@ dependencies:
   firebase_core: ^2.25.4
   select_card: ^0.0.9
   flutter_datetime_picker_plus: ^2.1.0
+  selectable_container: ^1.0.7
 
 dev_dependencies:
   flutter_test:

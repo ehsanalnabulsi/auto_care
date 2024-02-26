@@ -12,12 +12,12 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
   late List origins;
   late List brands;
   late List carsModels;
+  late int selectedCarModel;
+  late List<String> modelsNames;
   late List<String> originsNames;
   late List<String> brandsNames;
-  late List<String> modelsNames;
   late int selectedOrigin;
   late int selectedBrand;
-  late int selectedCarModel;
 
   XFile? pickedAvatar;
   dynamic avatarPath;
