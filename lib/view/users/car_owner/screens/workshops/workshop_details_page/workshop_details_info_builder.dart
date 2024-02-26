@@ -2,7 +2,6 @@ import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/constant/routes.dart';
 import 'package:auto_care/view/users/car_owner/screens/workshops/workshop_details_page/workshop_details_map_builder.dart';
 import 'package:auto_care/view/widgets/primary_button.dart';
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';

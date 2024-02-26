@@ -3,8 +3,6 @@ import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/functions/get_car_id_by_name.dart';
 import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 part 'create_maintenance_request_state.dart';
 
 class CreateMaintenanceRequestCubit

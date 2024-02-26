@@ -1,4 +1,3 @@
-import 'package:auto_care/core/constant/imports.dart';
 
 const baseurl = 'http://10.0.2.2:8000/api/';
 //  Shared End Points
