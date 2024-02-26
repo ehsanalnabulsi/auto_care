@@ -1,4 +1,3 @@
-
 const baseurl = 'http://10.0.2.2:8000/api/';
 //  Shared End Points
 
@@ -45,6 +44,7 @@ const getCurrentCarsURL = 'CurrentCars/';
 const addNewProductURL = 'AssignProduct/';
 const getStoreBrands = 'brandStore/';
 const getProductsURL = 'AddProduct/';
+const getAllProductsURL = 'AddPartStore/';
 
 
 // Not working yet
