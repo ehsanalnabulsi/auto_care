@@ -80,8 +80,6 @@ class CreateMaintenanceRequestCubit
     emit(UpdateSelectedWorkshopState());
   }
 
-  
-
   Future<void> createMaintenanceRequest(
       {required int carId,
       required int workshopId,
@@ -98,21 +96,23 @@ class CreateMaintenanceRequestCubit
           token: 'JWT $token', data: formData);
       print(response);
 
-      emit(CreateMaintenanceRequestSuccessState(response));
+      if (response.statusCode == 200) {
+        emit(CreateMaintenanceRequestSuccessState(response));
+      }
     } on DioException catch (error) {
       if (error.type == DioExceptionType.connectionTimeout) {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       } else if (error.type == DioExceptionType.connectionError) {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       } else if (error.type == DioExceptionType.receiveTimeout) {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       } else if (error.type == DioExceptionType.sendTimeout) {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       } else if (error.type == DioExceptionType.badResponse) {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       } else if (error.response != null) {
         if (error.response!.statusCode == 400) {
-          emit(CreateMaintenanceRequestErrorState(error.response!.data['']));
+          emit(CreateMaintenanceRequestErrorState(error));
         } else if (error.response!.statusCode == 401) {
           emit(CreateMaintenanceRequestErrorState(error.response!.data['']));
         } else if (error.response!.statusCode == 403) {
@@ -121,10 +121,10 @@ class CreateMaintenanceRequestCubit
           emit(CreateMaintenanceRequestErrorState(error.response!.data['']));
         }
       } else {
-        emit(CreateMaintenanceRequestErrorState(error.message));
+        emit(CreateMaintenanceRequestErrorState(error));
       }
     } catch (error) {
-      emit(CreateMaintenanceRequestErrorState(error.toString()));
+      emit(CreateMaintenanceRequestErrorState(error as DioException?));
     }
   }
 }

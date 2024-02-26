@@ -1,12 +1,13 @@
-
 import 'package:auto_care/core/constant/imports.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/request_tow_car_pages/request_tow_car_page.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/car_owner_request_details_page.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/request_tow_car_pages/request_tow_car_main_page/request_tow_car_page.dart';
+import 'package:auto_care/view/users/workshop_owner/screens/workshop_owner_requests/workshop_owner_request_details/workshop_owner_request_details_page.dart';
 import 'package:get/get.dart';
 
 class SharedRoutes {
   //      Shared Routes Names
   //        Authentication
-  //           Login Routes
+  //            Login Routes
   static const String login = '/login';
   static const String forgetPassword = '/login';
   //           Register Routes
@@ -25,6 +26,8 @@ class SharedRoutes {
 
 class WorkshopOwnerRoutes {
   static const String workshopOwnerMainPage = '/workshopOwnerMainPage';
+  static const String workshopOwnerRequestDetailsPage =
+      '/workshopOwnerRequestDetailsPage';
 }
 
 class PartsSupplierRoutes {
@@ -50,6 +53,8 @@ class CarOwnerRoutes {
   static const String partsSuppliers = '/partsSuppliers';
   static const String productDetails = '/productDetails';
   static const String createMaintenanceRequest = '/createMaintenanceRequest';
+  static const String carOwnerRequestDetailsPage =
+      '/carOwnerRequestDetailsPage';
   static const String towCarRequest = '/towCarRequest';
 }
 
@@ -109,6 +114,9 @@ List<GetPage<dynamic>> routes = [
       name: CarOwnerRoutes.createMaintenanceRequest,
       page: () => const CreateMaintenanceRequest()),
   GetPage(
+      name: CarOwnerRoutes.carOwnerRequestDetailsPage,
+      page: () => const CarOwnerRequestDetailsPage()),
+  GetPage(
       name: CarOwnerRoutes.towCarRequest,
       page: () => const RequestTowCarPage()),
 
@@ -116,6 +124,9 @@ List<GetPage<dynamic>> routes = [
   GetPage(
       name: WorkshopOwnerRoutes.workshopOwnerMainPage,
       page: () => const WorkshopOwnerMainPage()),
+  GetPage(
+      name: WorkshopOwnerRoutes.workshopOwnerRequestDetailsPage,
+      page: () => const WorkshopOwnerRequestDetailsPage()),
 
   //  Tow Car Owner Pages
   GetPage(

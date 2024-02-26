@@ -2,7 +2,6 @@ import 'package:auto_care/core/constant/end_points.dart';
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:image_picker/image_picker.dart';
 
 part 'add_new_car_state.dart';
@@ -99,7 +98,6 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
     }
   }
 
-  
   void addNewCar({
     required String plateNumber,
     required String carColor,

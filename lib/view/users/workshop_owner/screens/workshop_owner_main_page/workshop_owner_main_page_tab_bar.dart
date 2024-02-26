@@ -21,20 +21,14 @@ class WorkshopOwnerMainPageTabBar extends StatelessWidget {
         FlashyTabBarItem(
           activeColor: AppColors.primaryColor,
           inactiveColor: AppColors.greyColor,
-          icon: const Icon(Icons.home_rounded),
-          title: const Text('Home'),
-        ),
-        FlashyTabBarItem(
-          activeColor: AppColors.primaryColor,
-          inactiveColor: AppColors.greyColor,
           icon: const Icon(Icons.request_page),
-          title: const Text('Requests'),
+          title: const Text('Cars'),
         ),
         FlashyTabBarItem(
           activeColor: AppColors.primaryColor,
           inactiveColor: AppColors.greyColor,
           icon: const Icon(Icons.car_crash_sharp),
-          title: const Text('Cars'),
+          title: const Text('Requests'),
         ),
         FlashyTabBarItem(
           activeColor: AppColors.primaryColor,

@@ -1,20 +1,20 @@
+
+// Onboarding Pages Data
 import 'package:auto_care/core/constant/colors.dart';
 import 'package:auto_care/core/constant/image_asset.dart';
-import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/constant/routes.dart';
 import 'package:auto_care/data/models/list_tile_model.dart';
 import 'package:auto_care/data/models/maintenance_request.dart';
 import 'package:auto_care/data/models/onboarding_model.dart';
 import 'package:auto_care/view/users/car_owner/screens/Settings/car_owner_settings.dart';
 import 'package:auto_care/view/users/car_owner/screens/car_owner_cars/car_owner_cars_page.dart';
-import 'package:auto_care/view/users/car_owner/screens/requests/requests.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/car_owner_requests_page.dart';
 import 'package:auto_care/view/users/car_owner/screens/home_page/car_owner_home_page.dart';
-import 'package:auto_care/view/users/workshop_owner/screens/current_cars_page/workshop_owner_cars_page.dart';
-import 'package:auto_care/view/users/workshop_owner/screens/home_page/workshop_owner_home_page.dart';
-import 'package:auto_care/view/users/workshop_owner/screens/requests_page/workshop_owner_requests_page.dart';
+import 'package:auto_care/view/users/workshop_owner/screens/current_cars_page/workshop_owner_inprogress_cars_page.dart';
 import 'package:auto_care/view/users/workshop_owner/screens/settings/workshop_owner_settings.dart';
+import 'package:auto_care/view/users/workshop_owner/screens/workshop_owner_requests/workshop_owner_requests_page/workshop_owner_requests_page.dart';
+import 'package:flutter/material.dart';
 
-// Onboarding Pages Data
 List<OnBoardingModel> onboardingList = [
   // 1
   OnBoardingModel(
@@ -86,10 +86,9 @@ Map<String, Widget> tabsCarOwner = {
   'Settings': const CarOwnerSettings(),
 };
 Map<String, Widget> tabsWorkshopOwner = {
-  'Home Page': const WorkshopOwnerHomePage(),
-  'My Cars': const WorkshopOwnerCarsPage(),
+  'In-Progress Cars': const WorkshopOwnerInProgressCarsPage(),
   'Requests & History': const WorkshopOwnerRequestsPage(),
-  'Settings': const WorkshopOwnerSettingsPage(),
+  'Settings': const WorkshopOwnerSettings(),
 };
 // List sliderImages = [
 //   ImageAsset.homePageSlider1,

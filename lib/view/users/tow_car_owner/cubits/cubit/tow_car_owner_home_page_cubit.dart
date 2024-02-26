@@ -1,4 +1,5 @@
 import 'package:auto_care/core/constant/end_points.dart';
+import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
 import 'package:auto_care/core/services/location.dart';
@@ -22,10 +23,12 @@ class TowCarOwnerHomePageCubit extends Cubit<TowCarOwnerHomePageState> {
   void changeStatus() async {
     String? token = await CacheHelper.getString(key: 'token');
     isAvailable = !isAvailable;
-    final response =
-        DioHelper.patch(url: toggleAvailabilityURL, token: 'JWT $token', data: {
+    FormData formData = FormData.fromMap({
       'available': isAvailable,
     });
+    final response = DioHelper.patch(
+        url: toggleAvailabilityURL, token: 'JWT $token', formData: formData);
+    print(response);
     emit(ChangeStatusState());
   }
 }

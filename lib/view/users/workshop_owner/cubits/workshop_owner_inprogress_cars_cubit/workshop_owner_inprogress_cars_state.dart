@@ -1,0 +1,10 @@
+part of 'workshop_owner_inprogress_cars_cubit.dart';
+
+class WorkshopOwnerInProgressCarState {}
+
+class WorkshopOwnerInProgressCarInitialState
+    extends WorkshopOwnerInProgressCarState {}
+
+class GetWorkshopCurrentCarsLoadingState extends WorkshopOwnerInProgressCarState{}
+class GetWorkshopCurrentCarsSuccessState extends WorkshopOwnerInProgressCarState{}
+class GetWorkshopCurrentCarsErrorState extends WorkshopOwnerInProgressCarState{}

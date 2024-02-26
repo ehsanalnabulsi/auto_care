@@ -34,6 +34,6 @@ class CreateMaintenanceRequestSuccessState
 }
 
 class CreateMaintenanceRequestErrorState extends CreateMaintenanceRequestState {
-  final String? error;
+  final DioException? error;
   CreateMaintenanceRequestErrorState(this.error);
 }

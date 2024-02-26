@@ -6,7 +6,7 @@ import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 
 class CarOwnerMainPage extends StatelessWidget {
   const CarOwnerMainPage({super.key});
-
+  
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

@@ -24,6 +24,9 @@ const brandsURL = 'AddBrand/';
 const carModelsURL = 'CarModel/';
 const workshopsByBrandURL = 'CarModel/';
 const createMaintenanceRequestURL = 'CarMaintenance/';
+const getCarOwnerRequestsURL = 'CarOwnerRequest/';
+const acceptMaintenanceAppointment = 'CarMaintenance/';
+const cancelRequestURL = 'FinishedMaintenance/';
 
 //        Tow Car End Points
 const citiesURL = 'City/';
@@ -31,5 +34,7 @@ const towCarOrigins = 'TowOrigin/';
 const towCarBrands = 'TowBrand/';
 const toggleAvailabilityURL = 'toggleAvailability/';
 
-
+//        Workshop Owner End Points
+const getWorkshopOwnerRequestsURL = 'AddRequest/';
+const getCurrentCarsURL = 'CurrentCars/';
 // Not working yet

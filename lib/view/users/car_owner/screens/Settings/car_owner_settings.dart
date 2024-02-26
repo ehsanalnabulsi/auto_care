@@ -1,7 +1,7 @@
 
 
 import 'package:auto_care/core/constant/imports.dart';
-import 'package:auto_care/view/users/car_owner/cubits/settings_cubit/settings_cubit.dart';
+import 'package:auto_care/view/users/car_owner/cubits/car_owner_settings_cubit/car_owner_settings_cubit.dart';
 import 'package:auto_care/view/users/car_owner/screens/Settings/account_details_tile.dart';
 import 'package:auto_care/view/users/car_owner/screens/Settings/app_settings_tile.dart';
 import 'package:auto_care/view/users/car_owner/screens/Settings/help_center_tile.dart';

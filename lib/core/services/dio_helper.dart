@@ -29,17 +29,35 @@ class DioHelper {
 
   static Future<Response> patch({
     required String url,
-    Map<dynamic, dynamic>? data,
+    FormData? formData,
     String? token,
   }) async {
     Response response = await dio.patch(url,
-        data: data, options: Options(contentType: 'multipart/form-data'));
+        data: formData, options: Options(contentType: 'multipart/form-data'));
+    print(response);
+    return response;
+  }
+
+  static Future<Response> put({
+    required String url,
+    FormData? formData,
+    Map<String, dynamic>? query,
+    String? token,
+  }) async {
+    Response response = await dio.put(
+      url,
+      queryParameters: query,
+      data: formData,
+      options: Options(
+        headers: {'Authorization': token ?? ''},
+      ),
+    );
     print(response);
     return response;
   }
 
   static Future<Response> post(String url,
-      {Map<dynamic, dynamic>? data, String? token}) async {
+      {Map<String, dynamic>? data, String? token}) async {
     Response response = await dio.post(url,
         data: data,
         options: Options(
@@ -61,11 +79,6 @@ class DioHelper {
 
     print(response);
 
-    return response;
-  }
-
-  static Future<Response> put(String url, {Map<String, dynamic>? data}) async {
-    Response response = await dio.put(url, data: data);
     return response;
   }
 
