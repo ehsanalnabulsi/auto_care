@@ -1,11 +1,9 @@
-import 'package:auto_care/core/constant/colors.dart';
+import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/constant/routes.dart';
 import 'package:auto_care/view/users/workshop_owner/cubits/workshop_owner_requests_cubit/workshop_owner_requests_cubit.dart';
 import 'package:auto_care/view/widgets/primary_button.dart';
 import 'package:auto_care/view/widgets/secondary_button.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:get/get.dart';
 
@@ -14,6 +12,9 @@ class WorkshopOwnerRequestDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController startTimeController = TextEditingController();
+    TextEditingController endTimeController = TextEditingController();
+    TextEditingController costController = TextEditingController();
     Map? arguments = Get.arguments;
     dynamic requestDetails;
     if (arguments != null) {
@@ -105,134 +106,21 @@ class WorkshopOwnerRequestDetailsPage extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Request Details'),
             ),
-            body: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                            // margin: const EdgeInsets.all(12.0),
-                            width: 300,
-                            height: 50,
-                            decoration: workshopOwnerContainerDecoration(),
-                            child: Center(
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text('Car Model: ', style: theme.titleMedium),
-                                  Text(
-                                      '${requestDetails['car']['brandName']} - ${requestDetails['car']['modelName']}',
-                                      style: theme.titleLarge!.copyWith(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold))
-                                ])))),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                            // margin: const EdgeInsets.all(12.0),
-                            width: 300,
-                            height: 50,
-                            decoration: carOwnerContainerDecoration(),
-                            child: Center(
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text('Workshop Name: ',
-                                      style: theme.titleMedium),
-                                  Text(requestDetails['workshopName'],
-                                      style: theme.titleLarge!.copyWith(
-                                          color: AppColors.primaryColor,
-                                          fontWeight: FontWeight.bold))
-                                ])))),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                            width: 300,
-                            decoration: workshopOwnerContainerDecoration(),
-                            child: Center(
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text(
-                                      'Request Description: \n${requestDetails['description'] ?? 'null'}',
-                                      style: theme.titleMedium),
-                                ])))),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                            // margin: const EdgeInsets.all(12.0),
-                            width: 300,
-                            height: 50,
-                            decoration: carOwnerContainerDecoration(),
-                            child: Center(
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text('Request Status: ',
-                                      style: theme.titleMedium),
-                                  Text(requestDetails['statusName'],
-                                      style: theme.titleLarge!.copyWith(
-                                          color: AppColors.secondaryColor,
-                                          fontWeight: FontWeight.bold))
-                                ])))),
-                  ),
-                  if (requestDetails['date'] != null)
+            body: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(children: [
                     Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Container(
-                            // margin: const EdgeInsets.all(12.0),
-                            width: 320,
-                            height: 50,
-                            decoration: carOwnerContainerDecoration(),
-                            child: Center(
-                                child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                  Text(
-                                    'First Visit Date: ',
-                                    style: theme.titleMedium,
-                                  ),
-                                  Text(requestDetails['date'] ?? 'not set',
-                                      style: theme.titleMedium)
-                                ]))),
-                      ),
-                    ),
-                  if (requestDetails['startTime'] != null &&
-                      requestDetails['startTime'] != null)
-                    Align(
-                      alignment: Alignment.topLeft,
+                      alignment: Alignment.topRight,
                       child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Container(
                               // margin: const EdgeInsets.all(12.0),
-                              width: 350,
+                              width: 300,
                               height: 50,
-                              decoration: carOwnerContainerDecoration(),
+                              decoration: workshopOwnerContainerDecoration(),
                               child: Center(
                                   child: Row(
                                       crossAxisAlignment:
@@ -240,27 +128,22 @@ class WorkshopOwnerRequestDetailsPage extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                    Text(
-                                      'Starting Time: ',
-                                      style: theme.titleMedium,
-                                    ),
-                                    Text(requestDetails['startTime'],
+                                    Text('Car Model: ',
                                         style: theme.titleMedium),
                                     Text(
-                                      '    |    Ending Time: ',
-                                      style: theme.titleMedium,
-                                    ),
-                                    Text(requestDetails['endTime'],
-                                        style: theme.titleMedium)
+                                        '${requestDetails['car']['brandName']} - ${requestDetails['car']['modelName']}',
+                                        style: theme.titleLarge!.copyWith(
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold))
                                   ])))),
                     ),
-                  Align(
+                    Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
                           padding: const EdgeInsets.all(12.0),
                           child: Container(
                               // margin: const EdgeInsets.all(12.0),
-                              width: 200,
+                              width: 300,
                               height: 50,
                               decoration: carOwnerContainerDecoration(),
                               child: Center(
@@ -270,44 +153,275 @@ class WorkshopOwnerRequestDetailsPage extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                    Text('Stage: ', style: theme.titleMedium),
+                                    Text('Workshop Name: ',
+                                        style: theme.titleMedium),
+                                    Text(requestDetails['workshopName'],
+                                        style: theme.titleLarge!.copyWith(
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold))
+                                  ])))),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                              width: 300,
+                              decoration: workshopOwnerContainerDecoration(),
+                              child: Center(
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
                                     Text(
-                                        requestDetails['transactionStatusName'],
-                                        style: theme.titleMedium!.copyWith(
-                                          color: AppColors.blackColor,
-                                        ))
-                                  ])))))
-                ]),
-                if (requestDetails['transactionStatusName'] == 'INITIATED')
-                  SetAppointmentRequestButtonsBuilder(
-                      cubit: cubit, requestDetails: requestDetails),
-                if (requestDetails['transactionStatusName'] ==
-                    'SET_APPOINTMENT')
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
+                                        'Request Description: \n${requestDetails['description'] ?? 'null'}',
+                                        style: theme.titleMedium),
+                                  ])))),
+                    ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                              // margin: const EdgeInsets.all(12.0),
+                              width: 300,
+                              height: 50,
+                              decoration: carOwnerContainerDecoration(),
+                              child: Center(
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                    Text('Request Status: ',
+                                        style: theme.titleMedium),
+                                    Text(requestDetails['statusName'],
+                                        style: theme.titleLarge!.copyWith(
+                                            color: AppColors.secondaryColor,
+                                            fontWeight: FontWeight.bold))
+                                  ])))),
+                    ),
+                    if (requestDetails['date'] != null)
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: Container(
+                              // margin: const EdgeInsets.all(12.0),
+                              width: 320,
+                              height: 50,
+                              decoration: carOwnerContainerDecoration(),
+                              child: Center(
+                                  child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                    Text(
+                                      'First Visit Date: ',
+                                      style: theme.titleMedium,
+                                    ),
+                                    Text(requestDetails['date'] ?? 'not set',
+                                        style: theme.titleMedium)
+                                  ]))),
+                        ),
+                      ),
+                    if (requestDetails['startTime'] != null)
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Container(
+                                // margin: const EdgeInsets.all(12.0),
+                                width: 350,
+                                height: 50,
+                                decoration: carOwnerContainerDecoration(),
+                                child: Center(
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                      Text(
+                                        'Starting Time: ',
+                                        style: theme.titleMedium,
+                                      ),
+                                      Text(requestDetails['startTime'],
+                                          style: theme.titleMedium),
+                                    ])))),
+                      ),
+                    if (requestDetails['endTime'] != null)
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Container(
+                                // margin: const EdgeInsets.all(12.0),
+                                width: 350,
+                                height: 50,
+                                decoration: carOwnerContainerDecoration(),
+                                child: Center(
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                      Text(
+                                        'Ending Time: ',
+                                        style: theme.titleMedium,
+                                      ),
+                                      Text(requestDetails['endTime'],
+                                          style: theme.titleMedium),
+                                    ])))),
+                      ),
+                    if (requestDetails['cost'] != null)
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Container(
+                                // margin: const EdgeInsets.all(12.0),
+                                width: 200,
+                                height: 50,
+                                decoration: carOwnerContainerDecoration(),
+                                child: Center(
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                      Text(
+                                        'Cost: ',
+                                        style: theme.titleMedium,
+                                      ),
+                                      Text(requestDetails['cost'].toString(),
+                                          style: theme.titleMedium),
+                                    ])))),
+                      ),
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Container(
+                                // margin: const EdgeInsets.all(12.0),
+                                width: 240,
+                                height: 50,
+                                decoration: carOwnerContainerDecoration(),
+                                child: Center(
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                      Text('Stage: ', style: theme.titleMedium),
+                                      Text(
+                                          requestDetails[
+                                              'transactionStatusName'],
+                                          style: theme.titleMedium!.copyWith(
+                                            color: AppColors.blackColor,
+                                          ))
+                                    ])))))
+                  ]),
+                  if (requestDetails['transactionStatusName'] == 'INITIATED')
+                    SetAppointmentRequestButtonsBuilder(
+                        cubit: cubit, requestDetails: requestDetails),
+                  if (requestDetails['transactionStatusName'] ==
+                      'SET_APPOINTMENT')
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: Text(
+                          'Waiting For Accept Appointment',
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ))),
+                  if (requestDetails['transactionStatusName'] == 'PENDING')
+                    Form(
+                      child: Column(
+                        children: [
+                          CustomTextFormField(
+                            textInputType: TextInputType.none,
+                            controller: startTimeController,
+                            hintText: 'Start Time',
+                            onTap: () {
+                              DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime.now(), onConfirm: (date) {
+                                print(date);
+                                startTimeController.text = date.toString();
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
+                            },
+                          ),
+                          CustomTextFormField(
+                            textInputType: TextInputType.number,
+                            controller: endTimeController,
+                            hintText: 'End Time',
+                            onTap: () {
+                              DatePicker.showDateTimePicker(context,
+                                  showTitleActions: true,
+                                  minTime: DateTime.now(), onConfirm: (date) {
+                                print(date);
+                                endTimeController.text = date.toString();
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
+                            },
+                          ),
+                          CustomTextFormField(
+                            textInputType: TextInputType.number,
+                            controller: costController,
+                            hintText: 'Cost',
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: CancelRequestButton(
+                                      cubit: cubit,
+                                      requestDetails: requestDetails)),
+                              Expanded(
+                                  child: PrimaryButton(
+                                onPressed: () {
+                                  cubit.evaluateMaintenanceRequest(
+                                      requestDetails['id'],
+                                      startTimeController.text,
+                                      endTimeController.text,
+                                      costController.text);
+                                },
+                                textButton: 'Evaluate',
+                              )),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (requestDetails['transactionStatusName'] == 'IN_PROGRESS')
+                    Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: PrimaryButton(
+                          onPressed: () {
+                            cubit
+                                .finishMaintenanceRequest(requestDetails['id']);
+                          },
+                          textButton: 'Finish Car Maintenance',
+                        ))),
+                  if (requestDetails['transactionStatusName'] == 'FINISHED')
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
                       child: Center(
-                          child: Text(
-                        'Waiting For Accept Appointment',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ))),
-                if (requestDetails['transactionStatusName'] == 'PENDING')
-                  PendingStageButtonsBuilder(
-                      cubit: cubit, requestDetails: requestDetails),
-                if (requestDetails['transactionStatusName'] == 'IN_PROGRESS')
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                          child: Text(
-                        'Waiting For Accept Appointment',
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ))),
-                if (requestDetails['transactionStatusName'] == 'FINISHED')
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(
-                        child: Text('The Request is Finished Or Canceled')),
-                  )
-              ],
+                          child: Text('The Request is Finished Or Canceled')),
+                    )
+                ],
+              ),
             ),
           );
         },
@@ -339,33 +453,39 @@ class WorkshopOwnerRequestDetailsPage extends StatelessWidget {
   }
 }
 
-class PendingStageButtonsBuilder extends StatelessWidget {
-  const PendingStageButtonsBuilder({
-    super.key,
-    required this.cubit,
-    required this.requestDetails,
-  });
+// class PendingStageButtonsBuilder extends StatelessWidget {
+//   const PendingStageButtonsBuilder({
+//     super.key,
+//     required this.cubit,
+//     required this.requestDetails,
+//   });
 
-  final WorkshopOwnerRequestsCubit cubit;
-  final dynamic requestDetails;
+//   final WorkshopOwnerRequestsCubit cubit;
+//   final dynamic requestDetails;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-              child: CancelRequestButton(
-                  cubit: cubit, requestDetails: requestDetails)),
-          Expanded(
-              child: AcceptMaintenanceEvaluateButton(
-                  cubit: cubit, requestDetails: requestDetails)),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Form(
+//           child: Column(
+//             children: [
+//               CustomTextFormField(textInputType: TextInputType.number, controller: controller)
+//               Row(
+//                 children: [
+//                   Expanded(
+//                       child: CancelRequestButton(
+//                           cubit: cubit, requestDetails: requestDetails)),
+//                   Expanded(
+//                       child: AcceptMaintenanceEvaluateButton(
+//                           cubit: cubit, requestDetails: requestDetails)),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ));
+//   }
+// }
 
 class AcceptMaintenanceEvaluateButton extends StatelessWidget {
   const AcceptMaintenanceEvaluateButton({
@@ -417,6 +537,7 @@ class SetAppointmentRequestButtonsBuilder extends StatelessWidget {
                   DatePicker.showDateTimePicker(context,
                       showTitleActions: true,
                       minTime: DateTime.now(), onConfirm: (date) {
+                    print(date);
                     cubit.setVisitAppointment(requestDetails['id'], date);
                   }, currentTime: DateTime.now(), locale: LocaleType.en);
                 },

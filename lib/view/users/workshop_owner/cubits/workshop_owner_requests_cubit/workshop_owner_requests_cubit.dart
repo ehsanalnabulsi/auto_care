@@ -10,7 +10,8 @@ class WorkshopOwnerRequestsCubit extends Cubit<WorkshopOwnerRequestsState> {
   WorkshopOwnerRequestsCubit() : super(WorkshopOwnerRequestsInitial());
   static WorkshopOwnerRequestsCubit get(context) => BlocProvider.of(context);
   List userRequests = [];
-
+  List userHistoryRequests = [];
+  List userTowCarRequests = [];
   Future<void> getUserRequests() async {
     emit(GetUserRequestsLoadingState());
     String? token = CacheHelper.getString(key: 'token');
@@ -94,15 +95,106 @@ class WorkshopOwnerRequestsCubit extends Cubit<WorkshopOwnerRequestsState> {
     }
   }
 
+  Future<void> finishMaintenanceRequest(int requestId) async {
+    emit(CancelMaintenanceRequestLoadingState());
+    String? token = CacheHelper.getString(key: 'token');
+    FormData formData = FormData.fromMap({'status': 4});
+    try {
+      final response = await DioHelper.put(
+        url: '$finishMaintenance$requestId/',
+        token: 'JWT $token',
+        formData: formData,
+      );
+      print(response);
+      if (response.statusCode == 200) {
+        emit(CancelMaintenanceRequestSuccessState(response));
+      }
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(CancelMaintenanceRequestErrorState(error));
+      } else if (error.type == DioExceptionType.connectionError) {
+        emit(CancelMaintenanceRequestErrorState(error));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(CancelMaintenanceRequestErrorState(error));
+      } else if (error.type == DioExceptionType.sendTimeout) {
+        emit(CancelMaintenanceRequestErrorState(error));
+      } else if (error.type == DioExceptionType.badResponse) {
+        emit(CancelMaintenanceRequestErrorState(error));
+      } else if (error.response != null) {
+        if (error.response!.statusCode == 400) {
+          emit(CancelMaintenanceRequestErrorState(error));
+        } else if (error.response!.statusCode == 401) {
+          emit(CancelMaintenanceRequestErrorState(error));
+        } else if (error.response!.statusCode == 403) {
+          emit(CancelMaintenanceRequestErrorState(error));
+        } else if (error.response!.statusCode == 404) {
+          emit(CancelMaintenanceRequestErrorState(error));
+        }
+      } else {
+        emit(CancelMaintenanceRequestErrorState(error));
+      }
+    } catch (error) {
+      emit(CancelMaintenanceRequestErrorState(error));
+    }
+  }
+
   Future<void> setVisitAppointment(int requestId, DateTime date) async {
     emit(SetVisitAppointmentLoadingState());
     String? token = CacheHelper.getString(key: 'token');
-    FormData formData = FormData.fromMap({
-      'date': date,
-    });
+    FormData formData = FormData.fromMap({'date': date, 'status': '1'});
     try {
       final response = await DioHelper.patch(
         url: '$setVisitAppointmentURL$requestId/',
+        token: 'JWT $token',
+        formData: formData,
+      );
+      print(response);
+      if (response.statusCode == 200) {
+        emit(SetVisitAppointmentSuccessState(response));
+      }
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(SetVisitAppointmentErrorState(error));
+      } else if (error.type == DioExceptionType.connectionError) {
+        emit(SetVisitAppointmentErrorState(error));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(SetVisitAppointmentErrorState(error));
+      } else if (error.type == DioExceptionType.sendTimeout) {
+        emit(SetVisitAppointmentErrorState(error));
+      } else if (error.type == DioExceptionType.badResponse) {
+        emit(SetVisitAppointmentErrorState(error));
+      } else if (error.response != null) {
+        if (error.response!.statusCode == 400) {
+          emit(SetVisitAppointmentErrorState(error));
+        } else if (error.response!.statusCode == 401) {
+          emit(SetVisitAppointmentErrorState(error));
+        } else if (error.response!.statusCode == 403) {
+          emit(SetVisitAppointmentErrorState(error));
+        } else if (error.response!.statusCode == 404) {
+          emit(SetVisitAppointmentErrorState(error));
+        }
+      } else {
+        emit(SetVisitAppointmentErrorState(error));
+      }
+    } catch (error) {
+      emit(SetVisitAppointmentErrorState(error));
+    }
+  }
+
+  Future<void> evaluateMaintenanceRequest(
+      int requestId, String startTime, String endTime, String cost) async {
+    emit(SetVisitAppointmentLoadingState());
+    String? token = CacheHelper.getString(key: 'token');
+    FormData formData = FormData.fromMap({
+      'starts': startTime,
+      'ends': endTime,
+      'cost': cost,
+      'status': '1',
+      // 'description': 'Its'
+    });
+    try {
+      final response = await DioHelper.patch(
+        url: '$evaluateMaintenance$requestId/',
         token: 'JWT $token',
         formData: formData,
       );

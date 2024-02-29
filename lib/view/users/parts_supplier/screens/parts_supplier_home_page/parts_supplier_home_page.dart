@@ -1,6 +1,7 @@
 import 'package:auto_care/core/constant/colors.dart';
 import 'package:auto_care/core/constant/routes.dart';
 import 'package:auto_care/view/users/parts_supplier/cubits/parts_supplier_home_page_cubit/parts_supplier_home_page_cubit.dart';
+import 'package:auto_care/view/users/parts_supplier/screens/drawer.dart';
 import 'package:auto_care/view/widgets/app_progress_indicator.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class PartsSupplierHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<DrawerControllerState> drawerKey =
+        GlobalKey<DrawerControllerState>();
     return BlocProvider(
       create: (context) => PartsSupplierHomePageCubit()..getProducts(),
       child:
@@ -30,10 +33,10 @@ class PartsSupplierHomePage extends StatelessWidget {
                 },
                 child: const Icon(Icons.add_business_rounded),
               ),
-              drawer: const Drawer(),
+              drawer: PartsHomePageDrawer(drawerKey: drawerKey),
               body: ConditionalBuilder(
                 condition: state is GetProductsLoadingState,
-                builder: (context) => AppProgressIndicator(),
+                builder: (context) => const AppProgressIndicator(),
                 fallback: (context) => SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
@@ -75,7 +78,8 @@ class PartsSupplierHomePage extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(15),
                                           child: Image.network(
-                                            cubit.products[index]['avatar'],
+                                            cubit.products[index]
+                                                ['productImage'],
                                             fit: BoxFit.contain,
                                           )),
                                     ),
@@ -95,7 +99,8 @@ class PartsSupplierHomePage extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                cubit.products[index]['title'],
+                                                cubit.products[index]
+                                                    ['productName'],
                                                 style: theme.titleMedium,
                                                 textAlign: TextAlign.start,
                                                 maxLines: 1,
@@ -105,18 +110,13 @@ class PartsSupplierHomePage extends StatelessWidget {
                                                 style: theme.titleSmall,
                                                 textAlign: TextAlign.start,
                                               ),
-                                              Text(
-                                                'Price: ${cubit.products[index]['price'].toString()}',
-                                                style: theme.titleSmall,
-                                                textAlign: TextAlign.start,
-                                                maxLines: 1,
-                                              ),
                                             ],
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  Switch(value: true, onChanged: (value) {})
                                 ],
                               ),
                             ),

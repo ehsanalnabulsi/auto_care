@@ -5,7 +5,6 @@ import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/reques
 import 'package:auto_care/view/widgets/primary_button.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class RequestTowCarPage extends StatelessWidget {
   const RequestTowCarPage({super.key});
@@ -19,96 +18,84 @@ class RequestTowCarPage extends StatelessWidget {
       child: BlocConsumer<RequestTowCarCubit, RequestTowCarState>(
         listener: (context, state) {},
         builder: (context, state) {
-          LatLng initialMarker = const LatLng(0, 0);
-          if (state is GetCurrentLocationSuccessState) {
-            initialMarker = LatLng(
-                state.locationData.latitude!, state.locationData.longitude!);
-          }
           var cubit = context.read<RequestTowCarCubit>();
           return ConditionalBuilder(
               condition: state is GetCurrentLocationLoadingState,
               builder: (context) => const LoadingPageBuilder(),
               fallback: (context) => ConditionalBuilder(
-                    condition: state is GetCurrentLocationErrorState,
-                    builder: (context) =>
-                        GetCurrentLocationButton(cubit: cubit),
-                    fallback: (context) => Scaffold(
+                  condition: state is GetCurrentLocationSuccessState ||
+                      state is GetDestinationPointSuccessState,
+                  fallback: (context) => GetCurrentLocationButton(cubit: cubit),
+                  builder: (context) => Scaffold(
                         appBar: AppBar(
                           title: const Text('Request Tow Car'),
                         ),
                         body: Stack(
                           alignment: Alignment.bottomCenter,
                           children: [
-                            MapWidgetBuilder(
-                                mapController: mapController,
-                                initialMarker: initialMarker,
-                                state: state,
-                                cubit: cubit),
-                            PrimaryButton(
-                                onPressed: () {}, textButton: 'Order Now')
+                            FlutterMap(
+                              mapController: mapController,
+                              options: MapOptions(
+                                onTap: (tapPosition, newLocation) {
+                                  cubit.getDestinationPoint(
+                                      tapPosition, newLocation);
+                                },
+                                backgroundColor: AppColors.greyColor,
+                                initialZoom: 18.0,
+                                initialCenter: cubit.currentLocation,
+                              ),
+                              children: [
+                                TileLayer(
+                                  urlTemplate:
+                                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                  subdomains: const ['a', 'b', 'c'],
+                                ),
+                                PolylineLayer(polylines: [
+                                  Polyline(
+                                      strokeWidth: 5,
+                                      color: AppColors.primaryColor,
+                                      points: [
+                                        cubit.currentLocation,
+                                        cubit.destinationLocation
+                                      ])
+                                ]),
+                                MarkerLayer(markers: cubit.markers),
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                DropdownButtonFormField(
+                                    decoration: const InputDecoration(
+                                        label: Text('Select Workshop'),
+                                        fillColor: AppColors.whiteColor,
+                                        filled: true),
+                                    items: ['asd', 'asd']
+                                        .map<DropdownMenuItem<String>>(
+                                            (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
+                                    onChanged: (value) {}),
+                                PrimaryButton(
+                                    onPressed: () {
+                                      cubit.createTowCarRequest(
+                                          currentLocation:
+                                              cubit.currentLocation,
+                                          destinationLocation:
+                                              cubit.destinationLocation);
+                                    },
+                                    textButton: 'Order Now'),
+                              ],
+                            )
                           ],
-                        )),
-                  ));
+                        ),
+                      )));
         },
       ),
-    );
-  }
-}
-
-class MapWidgetBuilder extends StatelessWidget {
-  const MapWidgetBuilder({
-    super.key,
-    required this.mapController,
-    required this.initialMarker,
-    required this.cubit,
-    required this.state,
-  });
-
-  final MapController mapController;
-  final LatLng initialMarker;
-  final RequestTowCarCubit cubit;
-  final dynamic state;
-
-  @override
-  Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: mapController,
-      options: MapOptions(
-        onTap: (tapPosition, newLocation) {
-          cubit.getDestinationPoint(tapPosition, newLocation);
-        },
-        backgroundColor: AppColors.greyColor,
-        initialZoom: 18.0,
-        initialCenter: initialMarker,
-      ),
-      children: [
-        TileLayer(
-          urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-          subdomains: const ['a', 'b', 'c'],
-        ),
-        MarkerLayer(markers: [
-          Marker(
-            point: cubit.destinationLocation,
-            child: const Icon(
-              Icons.location_on,
-              size: 75,
-              color: AppColors.primaryColor,
-            ),
-          ),
-          
-        ]),
-        MarkerLayer(markers: [
-          Marker(
-            // key: ,
-            point: initialMarker,
-            child: const Icon(
-              Icons.location_on,
-              size: 75,
-              color: AppColors.primaryColor,
-            ),
-          ),
-        ]),
-      ],
     );
   }
 }

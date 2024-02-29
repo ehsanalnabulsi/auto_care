@@ -36,14 +36,14 @@ class WorkshopsGridViewBuilder extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(15),
-                child: cubit.workshops[index]['logo'] == null
+                child: cubit.workshops[index]['avatar'] == null
                     ? Image.asset(
                         ImageAsset.defaultImage,
                         fit: BoxFit.cover,
                         width: 250,
                       )
                     : Image.network(
-                        cubit.workshops[index]['logo'],
+                        cubit.workshops[index]['avatar'],
                         fit: BoxFit.cover,
                         width: 250,
                       ),

@@ -16,7 +16,7 @@ class PartsSupplierHomePageCubit extends Cubit<PartsSupplierHomePageState> {
   void getProducts() async {
     emit(GetProductsLoadingState());
     String? token = CacheHelper.getString(key: 'token');
-    await DioHelper.get(getAllProductsURL, token: 'JWT $token').then((value) {
+    await DioHelper.get(getProductsURL, token: 'JWT $token').then((value) {
       products = value.data;
 
       print(products);

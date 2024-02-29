@@ -24,8 +24,8 @@ class WorkshopOwnerInProgressCarCubit
     String? token = CacheHelper.getString(key: 'token');
     // int userId = token.print(token);
     try {
-      final response =
-          await DioHelper.get(getCurrentCarsURL, token: 'JWT $token');
+      final response = await DioHelper.get(getCurrentCarsURL,
+          token: 'JWT $token', query: {'transactionStatus': 5});
       print(response);
       // currentCars = response.data;
 

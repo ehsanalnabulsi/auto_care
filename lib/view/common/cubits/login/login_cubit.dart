@@ -25,7 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
     return await FirebaseMessaging.instance.getToken();
   }
 
-  void sendMobileToken() async {
+  Future<void> sendMobileToken() async {
     emit(SendMobileTokenLoadingState());
     String? mobileToken = await getToken();
     print('mobile token : $mobileToken');
@@ -54,7 +54,7 @@ class LoginCubit extends Cubit<LoginState> {
         loginURL,
         data: formData,
       );
-
+      sendMobileToken();
       emit(LoginSuccessState(response));
     } on DioException catch (error) {
       if (error.type == DioExceptionType.connectionTimeout) {

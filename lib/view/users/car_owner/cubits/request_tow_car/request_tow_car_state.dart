@@ -14,6 +14,15 @@ class GetCurrentLocationSuccessState extends RequestTowCarState {
 
 class GetCurrentLocationErrorState extends RequestTowCarState {}
 
+class CreateTowCarRequestLoadingState extends RequestTowCarState {}
+
+class CreateTowCarRequestSuccessState extends RequestTowCarState {
+  final LocationData locationData;
+  CreateTowCarRequestSuccessState(this.locationData);
+}
+
+class CreateTowCarRequestErrorState extends RequestTowCarState {}
+
 class GetDestinationPointLoadingState extends RequestTowCarState {}
 
 class GetDestinationPointSuccessState extends RequestTowCarState {

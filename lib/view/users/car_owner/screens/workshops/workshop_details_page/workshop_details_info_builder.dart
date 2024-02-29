@@ -2,7 +2,6 @@ import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/constant/routes.dart';
 import 'package:auto_care/view/users/car_owner/screens/workshops/workshop_details_page/workshop_details_map_builder.dart';
 import 'package:auto_care/view/widgets/primary_button.dart';
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -17,8 +16,9 @@ class WorkshopInfoBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    LatLng fakeLocation = const LatLng(35, 23);
-
+    List<String> splitValues = workshop['location'].split(',');
+    double latitude = double.parse(splitValues[0]);
+    double longitude = double.parse(splitValues[1]);
     var theme = Theme.of(context).textTheme;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -37,13 +37,9 @@ class WorkshopInfoBuilder extends StatelessWidget {
           const SizedBox(height: 8.0),
           const Divider(),
           Text('Address :\n${workshop['address']}', style: theme.titleLarge),
-          ConditionalBuilder(
-            condition: workshop['location'] == null,
-            builder: (context) => const Center(
-              child: Text('No Address Provided'),
-            ),
-            fallback: (context) => MapBuilder(currentLocation: fakeLocation),
-          ),
+          if (workshop['location'] == null) const Text('No Address Provided'),
+          if (workshop['location'] != null)
+            MapBuilder(currentLocation: LatLng(latitude, longitude)),
           CreateRequestButtonBuilder(cubit: cubit, workshop: workshop)
         ],
       ),

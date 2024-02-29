@@ -1,4 +1,3 @@
-
 // Onboarding Pages Data
 import 'package:auto_care/core/constant/colors.dart';
 import 'package:auto_care/core/constant/image_asset.dart';
@@ -79,6 +78,17 @@ List<TowCarOwnerDrawerListTile> towCarOwnerDrawerListTile = [
       leadingIcon: Icons.car_crash,
       route: SharedRoutes.registerTowCarOwnerPage),
 ];
+List<TowCarOwnerDrawerListTile> partsDrawerListTile = [
+  TowCarOwnerDrawerListTile(
+      title: 'Profile',
+      leadingIcon: Icons.person_outline_outlined,
+      route: SharedRoutes.registerCarOwnerPage),
+  TowCarOwnerDrawerListTile(
+      title: 'Settings',
+      leadingIcon: Icons.settings,
+      route: SharedRoutes.registerPartsSupplier),
+];
+
 Map<String, Widget> tabsCarOwner = {
   'Home Page': const CarOwnerHomePage(),
   'My Cars': const CarOwnerCarsPage(),

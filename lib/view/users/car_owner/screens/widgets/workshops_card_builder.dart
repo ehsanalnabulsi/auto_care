@@ -34,7 +34,7 @@ class WorkshopsCardBuilder extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: cubit.workshops[index]['logo'] == null
+                      child: cubit.workshops[index]['avatar'] == null
                           ? Image.asset(
                               ImageAsset.defaultImage,
                               fit: BoxFit.cover,
@@ -42,7 +42,7 @@ class WorkshopsCardBuilder extends StatelessWidget {
                               height: 150,
                             )
                           : Image.network(
-                              cubit.workshops[index]['logo'],
+                              cubit.workshops[index]['avatar'],
                               fit: BoxFit.cover,
                               width: 250,
                               height: 150,

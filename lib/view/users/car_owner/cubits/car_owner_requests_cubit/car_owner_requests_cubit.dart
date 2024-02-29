@@ -2,23 +2,107 @@ import 'package:auto_care/core/constant/end_points.dart';
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
-
 part 'car_owner_requests_state.dart';
 
 class CarOwnerRequestsCubit extends Cubit<CarOwnerRequestsState> {
   CarOwnerRequestsCubit() : super(RequestsPageInitial());
   static CarOwnerRequestsCubit get(context) => BlocProvider.of(context);
   List userRequests = [];
+  List userHistoryRequests = [];
+  List userTowCarRequests = [];
 
   Future<void> getUserRequests() async {
     emit(GetUserRequestsLoadingState());
     String? token = CacheHelper.getString(key: 'token');
     // int userId = token.print(token);
     try {
-      final response = await DioHelper.get(getCarOwnerRequestsURL,
-          token: 'JWT $token', query: {'requestType': 1});
+      final response = await DioHelper.get(getCarOwnersRequestsURL,
+          token: 'JWT $token',
+          query: {'requestType': 1, 'transactionsStatus': 6});
       // print(response.data[3]);
       userRequests = response.data;
+
+      emit(GetUserRequestsSuccessState());
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.connectionError) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.sendTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.badResponse) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.response != null) {
+        if (error.response!.statusCode == 400) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 401) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 403) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 404) {
+          emit(GetUserRequestsErrorState());
+        }
+      } else {
+        emit(GetUserRequestsErrorState());
+      }
+    } catch (error) {
+      emit(GetUserRequestsErrorState());
+    }
+  }
+
+  Future<void> getUserRequestsHistory() async {
+    emit(GetUserRequestsLoadingState());
+    String? token = CacheHelper.getString(key: 'token');
+    // int userId = token.print(token);
+    try {
+      final response = await DioHelper.get(getCarOwnerRequestsURL,
+          token: 'JWT $token',
+          query: {'requestType': 1, 'transactionStatus': 6});
+      // print(response.data[3]);
+      userHistoryRequests = response.data;
+      print(userRequests[2]);
+
+      emit(GetUserRequestsSuccessState());
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.connectionError) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.sendTimeout) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.type == DioExceptionType.badResponse) {
+        emit(GetUserRequestsErrorState());
+      } else if (error.response != null) {
+        if (error.response!.statusCode == 400) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 401) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 403) {
+          emit(GetUserRequestsErrorState());
+        } else if (error.response!.statusCode == 404) {
+          emit(GetUserRequestsErrorState());
+        }
+      } else {
+        emit(GetUserRequestsErrorState());
+      }
+    } catch (error) {
+      emit(GetUserRequestsErrorState());
+    }
+  }
+
+  Future<void> getUserRequestsTowCar() async {
+    emit(GetUserRequestsLoadingState());
+    String? token = CacheHelper.getString(key: 'token');
+    // int userId = token.print(token);
+    try {
+      final response = await DioHelper.get(getCarOwnerRequestsURL,
+          token: 'JWT $token', query: {'requestType': 2});
+      // print(response.data[3]);
+      userHistoryRequests = response.data;
       print(userRequests[2]);
 
       emit(GetUserRequestsSuccessState());
@@ -100,7 +184,7 @@ class CarOwnerRequestsCubit extends Cubit<CarOwnerRequestsState> {
     FormData formData = FormData.fromMap({'status': 1});
     try {
       final response = await DioHelper.put(
-        url: '$cancelRequestURL$requestId/',
+        url: '$acceptMaintenanceAppointmentURL$requestId/',
         token: 'JWT $token',
         formData: formData,
       );
@@ -143,7 +227,7 @@ class CarOwnerRequestsCubit extends Cubit<CarOwnerRequestsState> {
     FormData formData = FormData.fromMap({'status': 1});
     try {
       final response = await DioHelper.put(
-        url: '$cancelRequestURL$requestId/',
+        url: '$acceptPriceMaintenanceAppointmentURL$requestId/',
         token: 'JWT $token',
         formData: formData,
       );

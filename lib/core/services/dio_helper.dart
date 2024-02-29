@@ -34,7 +34,10 @@ class DioHelper {
     String? token,
   }) async {
     Response response = await dio.patch(url,
-        data: formData, options: Options(contentType: 'multipart/form-data'));
+        data: formData,
+        options: Options(
+            contentType: 'multipart/form-data',
+            headers: {'Authorization': token ?? ''}));
     print(response);
     return response;
   }

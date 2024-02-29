@@ -17,7 +17,9 @@ class CarOwnerHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CarOwnerHomePageCubit()..getData(),
+      create: (context) => CarOwnerHomePageCubit()
+        ..getWorkshops()
+        ..getPartsSuppliers(),
       // ..getSliderImages()
       // ..getWorkshops(),
       // ..getPartsSuppliers(),
@@ -32,7 +34,7 @@ class CarOwnerHomePage extends StatelessWidget {
               ),
               body: SingleChildScrollView(
                 child: ConditionalBuilder(
-                    condition: state is GetDataLoadingState,
+                    condition: state is GetPartsSupplierProductsLoadingState,
                     builder: (context) =>
                         const Center(child: AppProgressIndicator()),
                     fallback: (context) => ConditionalBuilder(
@@ -52,6 +54,7 @@ class CarOwnerHomePage extends StatelessWidget {
     );
   }
 }
+
 class MyFloatingActionButton extends StatelessWidget {
   const MyFloatingActionButton({
     super.key,

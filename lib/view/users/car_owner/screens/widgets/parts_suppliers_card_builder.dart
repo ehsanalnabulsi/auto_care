@@ -26,16 +26,14 @@ class PartsSuppliersCardBuilder extends StatelessWidget {
                   height: 150,
                   child: InkWell(
                     onTap: () {
-                      Get.toNamed(CarOwnerRoutes.storeDetails, arguments: {
-                        'partsSupplierDetails': cubit.partsSuppliers[index],
-                        'partsSupplierProducts': cubit.partsSupplierProducts
-                      });
+                      Get.toNamed(CarOwnerRoutes.partsSuppliers);
                     },
                     child: Stack(
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(15),
-                          child: cubit.partsSuppliers[index]['avatar'] == null
+                          child: cubit.partsSuppliers[index]['storeAvatar'] ==
+                                  null
                               ? Image.asset(
                                   ImageAsset.defaultImage,
                                   fit: BoxFit.cover,
@@ -43,7 +41,7 @@ class PartsSuppliersCardBuilder extends StatelessWidget {
                                   height: 150,
                                 )
                               : Image.network(
-                                  cubit.partsSuppliers[index]['avatar'],
+                                  cubit.partsSuppliers[index]['storeAvatar'],
                                   fit: BoxFit.cover,
                                   width: 250,
                                   height: 150,

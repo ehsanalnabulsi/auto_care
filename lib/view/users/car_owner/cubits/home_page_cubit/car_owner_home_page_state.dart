@@ -38,3 +38,15 @@ class GetDataSuccessState extends CarOwnerHomePageState {}
 class GetDataErrorState extends CarOwnerHomePageState {}
 
 class UpdateSelectedTagState extends CarOwnerHomePageState {}
+
+class GetPartsSupplierProductsLoadingState extends CarOwnerHomePageState {}
+
+class GetPartsSupplierProductsSuccessState extends CarOwnerHomePageState {
+  final Response response;
+  GetPartsSupplierProductsSuccessState(this.response);
+}
+
+class GetPartsSupplierProductsErrorState extends CarOwnerHomePageState {
+  final String? error;
+  GetPartsSupplierProductsErrorState(this.error);
+}

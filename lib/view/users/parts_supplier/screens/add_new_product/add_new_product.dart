@@ -21,27 +21,22 @@ class AddNewProduct extends StatelessWidget {
         listener: (context, state) async {
           if (state is AddNewProductSuccessState) {
             if (state.response.statusCode == 200) {
-              await CacheHelper.setString(
-                      key: 'token',
-                      value: state.response.data['data']['access'])
-                  .then((value) {
-                final snackBar = SnackBar(
-                  duration: const Duration(seconds: 3),
-                  elevation: 1,
-                  behavior: SnackBarBehavior.fixed,
-                  backgroundColor: Colors.transparent,
-                  content: AwesomeSnackbarContent(
-                    title: '${state.response.data['status']}',
-                    message: '${state.response.data['message']}',
-                    contentType: ContentType.success,
-                  ),
-                );
-                // CacheHelper.setBoolean(key: 'isLoggedIn', value: true);
-                ScaffoldMessenger.of(context)
-                  ..hideCurrentSnackBar()
-                  ..showSnackBar(snackBar);
-                Get.toNamed(PartsSupplierRoutes.partsSupplierHomePage);
-              });
+              final snackBar = SnackBar(
+                duration: const Duration(seconds: 3),
+                elevation: 1,
+                behavior: SnackBarBehavior.fixed,
+                backgroundColor: Colors.transparent,
+                content: AwesomeSnackbarContent(
+                  title: '${state.response.data['status']}',
+                  message: 'Adding New Products Successfully',
+                  contentType: ContentType.success,
+                ),
+              );
+              // CacheHelper.setBoolean(key: 'isLoggedIn', value: true);
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(snackBar);
+              Get.toNamed(PartsSupplierRoutes.partsSupplierHomePage);
             }
           } else if (state is AddNewProductErrorState) {
             final snackBar = SnackBar(

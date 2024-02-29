@@ -83,8 +83,9 @@ class CreateMaintenanceRequestCubit
       required int workshopId,
       required String description}) async {
     String? token = CacheHelper.getString(key: 'token');
+    print(carId);
     FormData formData = FormData.fromMap({
-      'carsId': carId,
+      'carsId': carId.toString(),
       'workshopId': workshopId,
       'requestType': 1,
       'description': description,

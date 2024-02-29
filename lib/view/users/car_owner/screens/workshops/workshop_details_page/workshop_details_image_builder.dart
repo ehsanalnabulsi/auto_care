@@ -13,8 +13,8 @@ class WorkshopImageBuilder extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-        child: workshop['logo'] == null
+        child: workshop['avatar'] == null
             ? Image.asset(ImageAsset.defaultImage, fit: BoxFit.cover)
-            : Image.network(workshop['logo'], fit: BoxFit.cover));
+            : Image.network(workshop['avatar'], fit: BoxFit.cover));
   }
 }

@@ -90,7 +90,7 @@ class AddNewProductCubit extends Cubit<AddNewProductState> {
     for (String brandName in brandNames) {
       Map<String, dynamic>? product =
           products.firstWhere((element) => element['productName'] == brandName);
-      productsIds.add(product?['id']);
+      productsIds.add(product?['productId']);
     }
     selectedProducts = productsIds;
     print(selectedProducts);

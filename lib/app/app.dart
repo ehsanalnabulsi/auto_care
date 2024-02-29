@@ -6,7 +6,6 @@ import 'package:auto_care/core/constant/themes.dart';
 import 'package:auto_care/core/services/location.dart';
 import 'package:auto_care/view/common/cubits/register/parts_supplier/register_parts_supplier_cubit.dart';
 import 'package:auto_care/view/common/cubits/register/workshop_owner/register_workshop_owner_cubit.dart';
-import 'package:auto_care/view/common/screens/onboarding/onboarding.dart';
 import 'package:auto_care/view/users/car_owner/cubits/main_page_cubit/main_page_cubit.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
           var cubit = AppCubit.get(context);
           LocationService.checkPermission();
 
-          Widget route = const PartsSupplierHomePage();
+          Widget route = const LoginPage();
 
           // if (!isLoggedIn) {
           //   route = LoginPage();

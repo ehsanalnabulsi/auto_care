@@ -1,5 +1,6 @@
 import 'package:auto_care/core/constant/end_points.dart';
 import 'package:auto_care/core/constant/imports.dart';
+import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
 import 'package:auto_care/view/users/car_owner/cubits/parts_suppliers_cubit/parts_suppliers_state.dart';
 
@@ -8,8 +9,8 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
   static PartsSuppliersCubit get(context) => BlocProvider.of(context);
   List partsSuppliers = [];
   List partsSupplierProducts = [];
+  List<String> categories = [];
   // bool isSearching = false;
-
   int? selectedCategoryIndex;
   void updateSelectedCategory(value) {
     selectedCategoryIndex = value;
@@ -24,14 +25,21 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
     DioHelper.get(specialistsURL).then((value) => null);
   }
 
-  void getPartsSupplierProducts(int id) async {
-    partsSupplierProducts = [];
+  Future<void> getPartsSupplierProducts(int id) async {
+    String? token = CacheHelper.getString(key: 'token');
     try {
       emit(GetPartsSupplierProductsLoadingState());
 
       final response = await DioHelper.get(partsSupplierProductURL,
-          query: {'partSupplierId': id});
+          token: 'JWT $token', query: {'partSupplierId': id});
+      print('============================');
+      print(response);
+      print('============================');
       partsSupplierProducts = response.data;
+      print('========+++++++++++++======================');
+
+      print(partsSupplierProducts);
+      print('==========+++++++++==================');
 
       emit(GetPartsSupplierProductsSuccessState(response));
     } on DioException catch (error) {
@@ -64,7 +72,7 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
   void getPartsSuppliers() async {
     try {
       emit(GetPartsSuppliersLoadingState());
-      final response = await DioHelper.get(partsSuppliersURL);
+      final response = await DioHelper.get(carOwnerPartsSupplier);
       partsSuppliers = response.data;
 
       emit(GetPartsSuppliersSuccessState(response));
@@ -92,6 +100,47 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
       }
     } catch (error) {
       emit(GetPartsSuppliersErrorState(error.toString()));
+    }
+  }
+
+  void getProducts() async {
+    try {
+      emit(GetPartsSupplierProductsLoadingState());
+      final response = await DioHelper.get(getProductsURL);
+      partsSupplierProducts = response.data;
+      print(response.data);
+      print(partsSupplierProducts);
+      for (var item in response.data) {
+        if (item is Map) {
+          categories.add(item['category'] as String);
+        }
+      }
+
+      emit(GetPartsSupplierProductsSuccessState(response));
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetPartsSupplierProductsErrorState(error.message));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetPartsSupplierProductsErrorState(error.message));
+      } else if (error.response != null) {
+        switch (error.response!.statusCode) {
+          case 400:
+            emit(GetPartsSupplierProductsErrorState(error.message));
+            break;
+          case 401:
+            emit(GetPartsSupplierProductsErrorState(error.message));
+            break;
+          case 404:
+            emit(GetPartsSupplierProductsErrorState(error.message));
+            break;
+          default:
+            emit(GetPartsSupplierProductsErrorState(error.message));
+        }
+      } else {
+        emit(GetPartsSupplierProductsErrorState(error.message));
+      }
+    } catch (error) {
+      emit(GetPartsSupplierProductsErrorState(error.toString()));
     }
   }
 }

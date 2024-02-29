@@ -8,14 +8,16 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Map<String, dynamic> userInfo = Get.arguments;
     TextEditingController fullNameController =
-        TextEditingController(text: 'Ehsan AL-Nabulsi');
+        TextEditingController(text: userInfo['fullName']);
     TextEditingController emailController =
         TextEditingController(text: 'ehsannabulsi5@gmail.com');
     TextEditingController phoneNumberController =
-        TextEditingController(text: '0997918937');
+        TextEditingController(text: userInfo['phoneNumber']);
     TextEditingController addressController =
         TextEditingController(text: 'Al-Haifa,Damascus,Syria');
+
     // String selectedCity = cities[0];
     return Scaffold(
       appBar: AppBar(

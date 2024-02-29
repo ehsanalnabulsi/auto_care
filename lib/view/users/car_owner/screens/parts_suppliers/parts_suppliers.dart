@@ -8,7 +8,6 @@ import 'package:auto_care/view/widgets/app_progress_indicator.dart';
 import 'package:chips_choice/chips_choice.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:get/get.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class PartsSuppliers extends StatelessWidget {
   const PartsSuppliers({super.key});
@@ -17,7 +16,9 @@ class PartsSuppliers extends StatelessWidget {
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocProvider(
-      create: (context) => PartsSuppliersCubit()..getPartsSuppliers(),
+      create: (context) => PartsSuppliersCubit()
+        ..getPartsSuppliers()
+        ..getProducts(),
       child: BlocConsumer<PartsSuppliersCubit, PartsSuppliersState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -44,7 +45,7 @@ class PartsSuppliers extends StatelessWidget {
                       icon: const Icon(Icons.arrow_back)),
                 ),
                 body: ConditionalBuilder(
-                    condition: state is GetPartsSuppliersLoadingState,
+                    condition: state is GetPartsSupplierProductsLoadingState,
                     builder: (context) =>
                         const Center(child: AppProgressIndicator()),
                     fallback: (context) => TabBarView(
@@ -67,40 +68,35 @@ class CarPartsTabBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
-    List<String> categories = ['all'];
-    for (var product in products) {
-      String category = product['category'];
-      if (!categories.contains(category)) {
-        categories.add(category);
-      }
-    }
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ChipsChoice<int>.single(
-            wrapped: false,
-            alignment: WrapAlignment.start,
-            value: cubit.selectedCategoryIndex,
-            onChanged: (val) {
-              cubit.updateSelectedCategory(val);
-            },
-            choiceItems: C2Choice.listFrom<int, String>(
-              source: categories,
-              value: (i, v) => i,
-              label: (i, v) => v,
-            ),
-            choiceStyle: C2ChipStyle.filled(
-              borderRadius: BorderRadius.circular(10),
-              color: AppColors.greyColor,
-              selectedStyle: C2ChipStyle.filled(color: AppColors.primaryColor),
-            ),
-          ),
+          // ChipsChoice<int>.single(
+          //   wrapped: false,
+          //   alignment: WrapAlignment.start,
+          //   value: cubit.selectedCategoryIndex,
+          //   onChanged: (val) {
+          //     cubit.updateSelectedCategory(val);
+          //   },
+          //   choiceItems: C2Choice.listFrom<int, String>(
+          //     source: categories,
+          //     value: (i, v) => i,
+          //     label: (i, v) => v,
+          //   ),
+          //   choiceStyle: C2ChipStyle.filled(
+          //     borderRadius: BorderRadius.circular(10),
+          //     color: AppColors.greyColor,
+          //     selectedStyle: C2ChipStyle.filled(color: AppColors.primaryColor),
+          //   ),
+          // ),
+
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
             child: ListView.builder(
-              itemCount: products.length,
+              itemCount: cubit.partsSupplierProducts.length,
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) => Card(
@@ -130,7 +126,8 @@ class CarPartsTabBuilder extends StatelessWidget {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: Image.network(
-                                products[index]['image'],
+                                cubit.partsSupplierProducts[index]
+                                    ['productImage'],
                                 fit: BoxFit.contain,
                               )),
                         ),
@@ -147,36 +144,22 @@ class CarPartsTabBuilder extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    products[index]['title'],
+                                    cubit.partsSupplierProducts[index]
+                                        ['productName'],
                                     style: theme.titleMedium,
                                     textAlign: TextAlign.start,
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    'Category: ${products[index]['category']}',
+                                    'Category: ${cubit.partsSupplierProducts[index]['categoryName']}',
                                     style: theme.titleSmall,
                                     textAlign: TextAlign.start,
                                   ),
                                   Text(
-                                    'Price: ${products[index]['price'].toString()}',
+                                    'description: ${cubit.partsSupplierProducts[index]['description']}',
                                     style: theme.titleSmall,
                                     textAlign: TextAlign.start,
-                                    maxLines: 1,
                                   ),
-                                  RatingBar.builder(
-                                    ignoreGestures: true,
-                                    initialRating: products[index]['rating']
-                                        ['rate'],
-                                    minRating: 1,
-                                    direction: Axis.horizontal,
-                                    allowHalfRating: true,
-                                    itemBuilder: (context, _) => const Icon(
-                                      Icons.star_rounded,
-                                      color: Colors.amber,
-                                    ),
-                                    onRatingUpdate: (rating) {},
-                                    itemSize: 24.0,
-                                  )
                                 ],
                               ),
                             ),
@@ -211,25 +194,6 @@ class PartsSuppliersTabBuilder extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ChipsChoice<int>.single(
-          //   wrapped: false,
-          //   alignment: WrapAlignment.start,
-          //   value: cubit.selectedCategoryIndex,
-          //   onChanged: (val) {
-          //     cubit.updateSelectedCategory(val);
-          //   },
-          //   choiceItems: C2Choice.listFrom<int, String>(
-          //     source: categories,
-          //     value: (i, v) => i,
-          //     label: (i, v) => v,
-          //   ),
-          //   choiceStyle: C2ChipStyle.filled(
-          //     borderRadius: BorderRadius.circular(10),
-          //     color: AppColors.greyColor,
-          //     selectedStyle: C2ChipStyle.filled(color: AppColors.primaryColor),
-          //   ),
-          // ),
-
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
             child: GridView.builder(
@@ -243,28 +207,32 @@ class PartsSuppliersTabBuilder extends StatelessWidget {
                 child: InkWell(
                   borderRadius: BorderRadius.circular(15),
                   onTap: () {
-                    cubit.getPartsSupplierProducts(
-                        cubit.partsSuppliers[index]['user_id']);
-                    Get.toNamed(CarOwnerRoutes.storeDetails, arguments: {
-                      'partsSupplierDetails': cubit.partsSuppliers[index],
-                      'partsSupplierProducts': cubit.partsSupplierProducts
+                    cubit
+                        .getPartsSupplierProducts(
+                            cubit.partsSuppliers[index]['id'])
+                        .then((value) {
+                      Get.toNamed(CarOwnerRoutes.storeDetails, arguments: {
+                        'partsSupplierDetails': cubit.partsSuppliers[index],
+                        'partsSupplierProducts': cubit.partsSupplierProducts
+                      });
                     });
                   },
                   child: Stack(
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: cubit.partsSuppliers[index]['logo'] == null
-                            ? Image.asset(
-                                ImageAsset.defaultImage,
-                                fit: BoxFit.cover,
-                                width: 250,
-                              )
-                            : Image.network(
-                                cubit.partsSuppliers[index]['logo'],
-                                fit: BoxFit.cover,
-                                width: 250,
-                              ),
+                        child:
+                            cubit.partsSuppliers[index]['storeAvatar'] == null
+                                ? Image.asset(
+                                    ImageAsset.defaultImage,
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                  )
+                                : Image.network(
+                                    cubit.partsSuppliers[index]['storeAvatar'],
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                  ),
                       ),
                       Container(
                         decoration: BoxDecoration(
