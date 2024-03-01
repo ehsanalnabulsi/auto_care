@@ -1,8 +1,6 @@
 import 'package:auto_care/core/constant/end_points.dart';
 import 'package:auto_care/core/constant/imports.dart';
-import 'package:auto_care/core/services/cache.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
-import 'package:dio/dio.dart';
 
 part 'car_owner_home_page_state.dart';
 
@@ -12,12 +10,7 @@ class CarOwnerHomePageCubit extends Cubit<CarOwnerHomePageState> {
   List workshops = [];
   List partsSuppliers = [];
   bool selectedTag = false;
-  List<String> sliderImages = [
-    'http://192.168.100.246:8000/media/autocare/images/photo_1_2024-01-29_20-30-34.jpg',
-    'http://192.168.100.246:8000/media/autocare/images/photo_2_2024-01-29_20-30-34.jpg',
-    'http://192.168.100.246:8000/media/autocare/images/photo_3_2024-01-29_20-30-34.jpg',
-    'http://192.168.100.246:8000/media/autocare/images/photo_4_2024-01-29_20-30-34.jpg'
-  ];
+  late List sliderImages;
 
   void getData() async {
     emit(GetDataLoadingState());
@@ -25,6 +18,40 @@ class CarOwnerHomePageCubit extends Cubit<CarOwnerHomePageState> {
     getWorkshops();
     getPartsSuppliers();
     emit(GetDataSuccessState());
+  }
+
+  void getSliderImages() async {
+    try {
+      emit(GetSliderImagesLoadingState());
+      final response = await DioHelper.get(sliderImagesURL);
+      sliderImages = response.data;
+
+      emit(GetSliderImagesSuccessState());
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetSliderImagesErrorState());
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetSliderImagesErrorState());
+      } else if (error.response != null) {
+        switch (error.response!.statusCode) {
+          case 400:
+            emit(GetSliderImagesErrorState());
+            break;
+          case 401:
+            emit(GetSliderImagesErrorState());
+            break;
+          case 404:
+            emit(GetSliderImagesErrorState());
+            break;
+          default:
+            emit(GetSliderImagesErrorState());
+        }
+      } else {
+        emit(GetSliderImagesErrorState());
+      }
+    } catch (error) {
+      emit(GetSliderImagesErrorState());
+    }
   }
 
   void getWorkshops() async {

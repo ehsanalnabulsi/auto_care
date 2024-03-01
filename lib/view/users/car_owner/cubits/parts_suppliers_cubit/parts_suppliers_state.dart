@@ -31,3 +31,15 @@ class GetPartsSupplierProductsErrorState extends PartsSuppliersState {
 }
 
 class UpdateSelectedCategory extends PartsSuppliersState {}
+
+class GetSpecialistsLoadingState extends PartsSuppliersState {}
+
+class GetSpecialistsSuccessState extends PartsSuppliersState {
+  final Response response;
+  GetSpecialistsSuccessState(this.response);
+}
+
+class GetSpecialistsErrorState extends PartsSuppliersState {
+  final String? error;
+  GetSpecialistsErrorState(this.error);
+}

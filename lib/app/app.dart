@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           LocationService.checkPermission();
-          Widget route = const LoginPage();
+          Widget route = const CarOwnerMainPage();
 
           // if (!isLoggedIn) {
           //   route = LoginPage();

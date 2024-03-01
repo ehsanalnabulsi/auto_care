@@ -18,11 +18,9 @@ class CarOwnerHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => CarOwnerHomePageCubit()
+        ..getSliderImages()
         ..getWorkshops()
         ..getPartsSuppliers(),
-      // ..getSliderImages()
-      // ..getWorkshops(),
-      // ..getPartsSuppliers(),
       child: BlocConsumer<CarOwnerHomePageCubit, CarOwnerHomePageState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -34,7 +32,7 @@ class CarOwnerHomePage extends StatelessWidget {
               ),
               body: SingleChildScrollView(
                 child: ConditionalBuilder(
-                    condition: state is GetPartsSupplierProductsLoadingState,
+                    condition: state is GetPartsSuppliersLoadingState,
                     builder: (context) =>
                         const Center(child: AppProgressIndicator()),
                     fallback: (context) => ConditionalBuilder(
@@ -104,7 +102,8 @@ class CarOwnerHomePageBody extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(25),
                           child: Image(
-                            image: NetworkImage(cubit.sliderImages[index]),
+                            image: NetworkImage(
+                                cubit.sliderImages[index]['images']),
                             fit: BoxFit.cover,
                           ),
                         ),

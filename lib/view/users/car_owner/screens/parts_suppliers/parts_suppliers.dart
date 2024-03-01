@@ -1,7 +1,6 @@
 import 'package:auto_care/core/constant/image_asset.dart';
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/constant/routes.dart';
-import 'package:auto_care/data/static.dart';
 import 'package:auto_care/view/users/car_owner/cubits/parts_suppliers_cubit/parts_suppliers_cubit.dart';
 import 'package:auto_care/view/users/car_owner/cubits/parts_suppliers_cubit/parts_suppliers_state.dart';
 import 'package:auto_care/view/widgets/app_progress_indicator.dart';
@@ -17,6 +16,7 @@ class PartsSuppliers extends StatelessWidget {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return BlocProvider(
       create: (context) => PartsSuppliersCubit()
+        ..getSpecialists()
         ..getPartsSuppliers()
         ..getProducts(),
       child: BlocConsumer<PartsSuppliersCubit, PartsSuppliersState>(
@@ -74,25 +74,7 @@ class CarPartsTabBuilder extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ChipsChoice<int>.single(
-          //   wrapped: false,
-          //   alignment: WrapAlignment.start,
-          //   value: cubit.selectedCategoryIndex,
-          //   onChanged: (val) {
-          //     cubit.updateSelectedCategory(val);
-          //   },
-          //   choiceItems: C2Choice.listFrom<int, String>(
-          //     source: categories,
-          //     value: (i, v) => i,
-          //     label: (i, v) => v,
-          //   ),
-          //   choiceStyle: C2ChipStyle.filled(
-          //     borderRadius: BorderRadius.circular(10),
-          //     color: AppColors.greyColor,
-          //     selectedStyle: C2ChipStyle.filled(color: AppColors.primaryColor),
-          //   ),
-          // ),
-
+          CategoriesChipsBuilder(cubit: cubit),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
             child: ListView.builder(
@@ -151,7 +133,7 @@ class CarPartsTabBuilder extends StatelessWidget {
                                     maxLines: 1,
                                   ),
                                   Text(
-                                    'Category: ${cubit.partsSupplierProducts[index]['categoryName']}',
+                                    'Category: ${cubit.partsSupplierProducts[index]['category']}',
                                     style: theme.titleSmall,
                                     textAlign: TextAlign.start,
                                   ),
@@ -292,6 +274,39 @@ class PartsSuppliersTabBuilder extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class CategoriesChipsBuilder extends StatelessWidget {
+  const CategoriesChipsBuilder({
+    super.key,
+    required this.cubit,
+  });
+
+  final PartsSuppliersCubit cubit;
+
+  @override
+  Widget build(BuildContext context) {
+    return ChipsChoice<int>.single(
+      padding: const EdgeInsets.all(4),
+      wrapped: false,
+      alignment: WrapAlignment.start,
+      value: cubit.selectedCategoryIndex,
+      onChanged: (value) {
+        cubit.updateSelectedSpecialist(value);
+      },
+      choiceItems: C2Choice.listFrom<int, String>(
+        source: cubit.chipCategories,
+        value: (i, v) => i,
+        label: (i, v) => v,
+      ),
+      choiceStyle: C2ChipStyle.filled(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        borderRadius: BorderRadius.circular(10),
+        color: AppColors.greyColor,
+        selectedStyle: C2ChipStyle.filled(color: AppColors.primaryColor),
       ),
     );
   }

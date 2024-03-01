@@ -115,7 +115,7 @@ class PartsSupplierDetailsPage extends StatelessWidget {
                                             maxLines: 1,
                                           ),
                                           Text(
-                                            'Category: ${products[index]['categoryName']}',
+                                            'Category: ${products[index]['category']}',
                                             style: theme.titleSmall,
                                             textAlign: TextAlign.start,
                                           ),

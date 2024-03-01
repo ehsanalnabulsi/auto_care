@@ -9,11 +9,13 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
   static PartsSuppliersCubit get(context) => BlocProvider.of(context);
   List partsSuppliers = [];
   List partsSupplierProducts = [];
-  List<String> categories = [];
-  // bool isSearching = false;
+  List categories = [];
+  List<String> chipCategories = [];
   int? selectedCategoryIndex;
-  void updateSelectedCategory(value) {
+  void updateSelectedSpecialist(value) {
     selectedCategoryIndex = value;
+    if (selectedCategoryIndex != 0) {
+    } else {}
     emit(UpdateSelectedCategory());
   }
 
@@ -21,8 +23,41 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
     DioHelper.get(originsURL).then((value) => null);
   }
 
-  void getSpecialists() {
-    DioHelper.get(specialistsURL).then((value) => null);
+  void getSpecialists() async {
+    try {
+      emit(GetSpecialistsLoadingState());
+      final response = await DioHelper.get(specialistsURL);
+      categories = response.data;
+      chipCategories = [
+        'All',
+        ...categories.map((item) => item["name"] as String).toList()
+      ];
+      emit(GetSpecialistsSuccessState(response));
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetSpecialistsErrorState(error.message));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetSpecialistsErrorState(error.message));
+      } else if (error.response != null) {
+        switch (error.response!.statusCode) {
+          case 400:
+            emit(GetSpecialistsErrorState(error.message));
+            break;
+          case 401:
+            emit(GetSpecialistsErrorState(error.message));
+            break;
+          case 404:
+            emit(GetSpecialistsErrorState(error.message));
+            break;
+          default:
+            emit(GetSpecialistsErrorState(error.message));
+        }
+      } else {
+        emit(GetSpecialistsErrorState(error.message));
+      }
+    } catch (error) {
+      emit(GetSpecialistsErrorState(error.toString()));
+    }
   }
 
   Future<void> getPartsSupplierProducts(int id) async {
@@ -108,13 +143,6 @@ class PartsSuppliersCubit extends Cubit<PartsSuppliersState> {
       emit(GetPartsSupplierProductsLoadingState());
       final response = await DioHelper.get(getProductsURL);
       partsSupplierProducts = response.data;
-      print(response.data);
-      print(partsSupplierProducts);
-      for (var item in response.data) {
-        if (item is Map) {
-          categories.add(item['category'] as String);
-        }
-      }
 
       emit(GetPartsSupplierProductsSuccessState(response));
     } on DioException catch (error) {
