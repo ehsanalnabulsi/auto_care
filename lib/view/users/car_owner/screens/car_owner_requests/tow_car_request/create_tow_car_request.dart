@@ -5,7 +5,6 @@ import 'package:auto_care/view/widgets/app_progress_indicator.dart';
 import 'package:auto_care/view/widgets/custom_drop_down_button.dart';
 import 'package:auto_care/view/widgets/primary_button.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:select_card/select_card.dart';
 
@@ -14,55 +13,51 @@ class CreateTowCarRequest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MapController mapController = MapController();
-    return BlocProvider(
-      create: (context) => RequestTowCarCubit()..getUserCars(),
-      child: BlocConsumer<RequestTowCarCubit, RequestTowCarState>(
-        listener: (context, state) async {
-          // if (state is CreateMaintenanceRequestSuccessState) {
-          //   if (state.response.statusCode == 200) {
-          //     final snackBar = SnackBar(
-          //       duration: const Duration(seconds: 3),
-          //       elevation: 1,
-          //       behavior: SnackBarBehavior.fixed,
-          //       backgroundColor: Colors.transparent,
-          //       content: AwesomeSnackbarContent(
-          //         title: 'Request Sent',
-          //         message: '${state.response.statusMessage}',
-          //         contentType: ContentType.success,
-          //       ),
-          //     );
-          //     // CacheHelper.setBoolean(key: 'isLoggedIn', value: true);
-          //     ScaffoldMessenger.of(context)
-          //       ..hideCurrentSnackBar()
-          //       ..showSnackBar(snackBar);
-          //     Get.toNamed(CarOwnerRoutes.carOwnerMainPage, arguments: 2);
-          //   }
-          // } else if (state is CreateMaintenanceRequestErrorState) {
-          //   final snackBar = SnackBar(
-          //     duration: const Duration(seconds: 3),
-          //     elevation: 0,
-          //     behavior: SnackBarBehavior.floating,
-          //     backgroundColor: Colors.transparent,
-          //     content: AwesomeSnackbarContent(
-          //       title: 'Something went wrong',
-          //       message: '${state.error}',
-          //       contentType: ContentType.failure,
-          //     ),
-          //   );
-          //   ScaffoldMessenger.of(context)
-          //     ..hideCurrentSnackBar()
-          //     ..showSnackBar(snackBar);
-          // }
-        },
-        builder: (context, state) {
-          var cubit = RequestTowCarCubit.get(context);
-          return Scaffold(
-            appBar: AppBar(
-              title: const Text('Request Maintenance'),
-            ),
-            body: SingleChildScrollView(
-                child: Form(
+    return BlocConsumer<RequestTowCarCubit, RequestTowCarState>(
+      listener: (context, state) async {
+        // if (state is CreateMaintenanceRequestSuccessState) {
+        //   if (state.response.statusCode == 200) {
+        //     final snackBar = SnackBar(
+        //       duration: const Duration(seconds: 3),
+        //       elevation: 1,
+        //       behavior: SnackBarBehavior.fixed,
+        //       backgroundColor: Colors.transparent,
+        //       content: AwesomeSnackbarContent(
+        //         title: 'Request Sent',
+        //         message: '${state.response.statusMessage}',
+        //         contentType: ContentType.success,
+        //       ),
+        //     );
+        //     // CacheHelper.setBoolean(key: 'isLoggedIn', value: true);
+        //     ScaffoldMessenger.of(context)
+        //       ..hideCurrentSnackBar()
+        //       ..showSnackBar(snackBar);
+        //     Get.toNamed(CarOwnerRoutes.carOwnerMainPage, arguments: 2);
+        //   }
+        // } else if (state is CreateMaintenanceRequestErrorState) {
+        //   final snackBar = SnackBar(
+        //     duration: const Duration(seconds: 3),
+        //     elevation: 0,
+        //     behavior: SnackBarBehavior.floating,
+        //     backgroundColor: Colors.transparent,
+        //     content: AwesomeSnackbarContent(
+        //       title: 'Something went wrong',
+        //       message: '${state.error}',
+        //       contentType: ContentType.failure,
+        //     ),
+        //   );
+        //   ScaffoldMessenger.of(context)
+        //     ..hideCurrentSnackBar()
+        //     ..showSnackBar(snackBar);
+        // }
+      },
+      builder: (context, state) {
+        var cubit = RequestTowCarCubit.get(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Request Maintenance'),
+          ),
+          body: SingleChildScrollView(
               child: ConditionalBuilder(
                   condition: state is GetUserCarsSuccessState &&
                       cubit.userCars.isEmpty,
@@ -77,7 +72,7 @@ class CreateTowCarRequest extends StatelessWidget {
                             Get.toNamed(CarOwnerRoutes.addNewCar);
                           },
                           label: const Text(
-                            'Dont Have Requests , Go to Add New Car',
+                            'Don\'t Have Requests , Go to Add New Car',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
@@ -118,44 +113,37 @@ class CreateTowCarRequest extends StatelessWidget {
                                       items: cubit.workshopsNames,
                                     ),
                                 fallback: (context) => const SizedBox()),
-                            FlutterMap(
-                              mapController: mapController,
-                              options: MapOptions(
-                                onTap: (tapPosition, newLocation) {
-                                  cubit.getDestinationPoint(
-                                      tapPosition, newLocation);
-                                },
-                                backgroundColor: AppColors.greyColor,
-                                initialZoom: 18.0,
-                                initialCenter: cubit.currentLocation,
-                              ),
-                              children: [
-                                TileLayer(
-                                  urlTemplate:
-                                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                  subdomains: const ['a', 'b', 'c'],
-                                ),
-                                PolylineLayer(polylines: [
-                                  Polyline(
-                                      strokeWidth: 5,
-                                      color: AppColors.primaryColor,
-                                      points: [
-                                        cubit.currentLocation,
-                                        cubit.destinationLocation
-                                      ])
-                                ]),
-                                MarkerLayer(markers: cubit.markers),
-                              ],
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                  foregroundColor: AppColors.primaryColor,
+                                  textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                              onPressed: () async {
+                                cubit.getCurrentLocation()?.then((value) {
+                                  cubit.getAvailableTowCars()?.then((value) {
+                                    Get.toNamed(CarOwnerRoutes.pinDestination);
+                                  });
+                                });
+                              },
+                              child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('Or Press To Pin Your Location'),
+                                    Icon(
+                                      Icons.pin_drop,
+                                      size: 24,
+                                    )
+                                  ]),
                             ),
                             ConditionalBuilder(
-                                condition: state
-                                    is CreateMaintenanceRequestLoadingState,
+                                condition:
+                                    state is CreateTowCarRequestLoadingState,
                                 builder: (context) =>
                                     const AppProgressIndicator(),
                                 fallback: (context) => PrimaryButton(
                                     onPressed: () {
-                                      if (cubit.selectedCar != null &&
-                                          cubit.selectedWorkshop != null) {
+                                      if (cubit.selectedCar != null) {
                                         cubit.createTowCarRequest(
                                             carId: cubit.selectedCar!,
                                             currentLocation:
@@ -167,11 +155,9 @@ class CreateTowCarRequest extends StatelessWidget {
                                     textButton: 'Send Request'))
                           ],
                         ),
-                      )),
-            )),
-          );
-        },
-      ),
+                      ))),
+        );
+      },
     );
   }
 }

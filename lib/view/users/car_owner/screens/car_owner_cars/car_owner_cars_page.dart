@@ -29,23 +29,25 @@ class CarOwnerCarsPage extends StatelessWidget {
               appBar: AppBar(
                 title: const Text('My Cars'),
               ),
-              body: ConditionalBuilder(
-                  condition: state is GetUserCarsLoadingState,
-                  builder: (context) => const Center(
-                        child: AppProgressIndicator(),
-                      ),
-                  fallback: (context) => ConditionalBuilder(
-                        condition: state is GetUserCarsSuccessState,
-                        fallback: (context) =>
-                            NoUserCarsFoundBody(theme: theme),
-                        builder: (context) {
-                          if (cubit.userCars.isEmpty) {
-                            return NoUserCarsFoundBody(theme: theme);
-                          }
+              body: SingleChildScrollView(
+                child: ConditionalBuilder(
+                    condition: state is GetUserCarsLoadingState,
+                    builder: (context) => const Center(
+                          child: AppProgressIndicator(),
+                        ),
+                    fallback: (context) => ConditionalBuilder(
+                          condition: state is GetUserCarsSuccessState,
+                          fallback: (context) =>
+                              NoUserCarsFoundBody(theme: theme),
+                          builder: (context) {
+                            if (cubit.userCars.isEmpty) {
+                              return NoUserCarsFoundBody(theme: theme);
+                            }
 
-                          return UserCarsBody(cubit: cubit, theme: theme);
-                        },
-                      )),
+                            return UserCarsBody(cubit: cubit, theme: theme);
+                          },
+                        )),
+              ),
             ),
           );
         },

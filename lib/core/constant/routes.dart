@@ -1,6 +1,7 @@
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/car_owner_requests_main_page/car_owner_request_details_page.dart';
-import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/request_tow_car_pages/create_tow_car_request/create_tow_car_request.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/tow_car_request/create_tow_car_request.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/tow_car_request/create_tow_car_request_pin_location.dart';
 import 'package:auto_care/view/users/workshop_owner/screens/workshop_owner_requests/workshop_owner_request_details/workshop_owner_request_details_page.dart';
 import 'package:get/get.dart';
 
@@ -56,6 +57,7 @@ class CarOwnerRoutes {
   static const String carOwnerRequestDetailsPage =
       '/carOwnerRequestDetailsPage';
   static const String towCarRequest = '/towCarRequest';
+  static const String pinDestination = '/pinDestination';
 }
 
 List<GetPage<dynamic>> routes = [
@@ -104,6 +106,9 @@ List<GetPage<dynamic>> routes = [
   GetPage(
       name: CarOwnerRoutes.productDetails,
       page: () => ProductDetails(product: Get.arguments.product)),
+  GetPage(
+      name: CarOwnerRoutes.pinDestination,
+      page: () => const AddDestinationLocationPage()),
   GetPage(
       name: CarOwnerRoutes.workshopDetails,
       page: () => const WorkshopDetailsPage()),

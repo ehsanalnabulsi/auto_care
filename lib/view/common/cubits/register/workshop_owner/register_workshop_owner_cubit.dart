@@ -1,9 +1,7 @@
 import 'package:auto_care/core/constant/end_points.dart';
 import 'package:auto_care/core/constant/imports.dart';
 import 'package:auto_care/core/services/dio_helper.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
@@ -186,7 +184,7 @@ class RegisterWorkshopOwnerCubit extends Cubit<RegisterWorkshopOwnerState> {
       if (response.statusCode == 201) {
         try {
           final response2 = await DioHelper.postForm(registerWorkshopURL,
-              token: 'JWT ${response.data['token']}',
+              token: 'JWT ${response.data['access']}',
               data: workshopInfoFormData);
           responseApi2 = response2;
         } catch (error) {

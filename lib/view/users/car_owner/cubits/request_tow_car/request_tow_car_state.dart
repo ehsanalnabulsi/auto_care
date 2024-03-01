@@ -1,9 +1,8 @@
 part of 'request_tow_car_cubit.dart';
 
-@immutable
-sealed class RequestTowCarState {}
+class RequestTowCarState {}
 
-final class RequestTowCarInitial extends RequestTowCarState {}
+class RequestTowCarInitial extends RequestTowCarState {}
 
 class GetCurrentLocationLoadingState extends RequestTowCarState {}
 
@@ -17,8 +16,13 @@ class GetCurrentLocationErrorState extends RequestTowCarState {}
 class CreateTowCarRequestLoadingState extends RequestTowCarState {}
 
 class CreateTowCarRequestSuccessState extends RequestTowCarState {
-  final LocationData locationData;
-  CreateTowCarRequestSuccessState(this.locationData);
+  final Future<Response<dynamic>>? response;
+  CreateTowCarRequestSuccessState(this.response);
+}
+
+class CreateTowCarRequestErrorState extends RequestTowCarState {
+  final String? error;
+  CreateTowCarRequestErrorState(this.error);
 }
 
 class GetUserCarsLoadingState extends RequestTowCarState {}
@@ -33,8 +37,6 @@ class GetWorkshopsByBrandIdSuccessState extends RequestTowCarState {}
 
 class GetWorkshopsByBrandIdErrorState extends RequestTowCarState {}
 
-class CreateTowCarRequestErrorState extends RequestTowCarState {}
-
 class GetDestinationPointLoadingState extends RequestTowCarState {}
 
 class GetDestinationPointSuccessState extends RequestTowCarState {
@@ -43,12 +45,6 @@ class GetDestinationPointSuccessState extends RequestTowCarState {
 }
 
 class GetDestinationPointErrorState extends RequestTowCarState {}
-
-
-
-
-class CreateMaintenanceRequestInitial extends RequestTowCarState {}
-
 
 class UpdateSelectedWorkshopState extends RequestTowCarState {}
 
@@ -64,16 +60,14 @@ class GetWorkshopsErrorState extends RequestTowCarState {
   GetWorkshopsErrorState(this.error);
 }
 
-class CreateMaintenanceRequestLoadingState
-    extends RequestTowCarState {}
+class GetAvailableTowCarsLoadingState extends RequestTowCarState {}
 
-class CreateMaintenanceRequestSuccessState
-    extends RequestTowCarState {
+class GetAvailableTowCarsSuccessState extends RequestTowCarState {
   final dynamic response;
-  CreateMaintenanceRequestSuccessState(this.response);
+  GetAvailableTowCarsSuccessState(this.response);
 }
 
-class CreateMaintenanceRequestErrorState extends RequestTowCarState {
-  final DioException? error;
-  CreateMaintenanceRequestErrorState(this.error);
+class GetAvailableTowCarsErrorState extends RequestTowCarState {
+  final String? error;
+  GetAvailableTowCarsErrorState(this.error);
 }

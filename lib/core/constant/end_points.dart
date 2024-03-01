@@ -1,4 +1,5 @@
-const baseurl = 'http://192.168.155.246:8000/api/';
+const baseurl = 'http://192.168.211.246:8000/api/';
+// const baseurl = 'http://10.0.2.2:8000/api/';
 //  Shared End Points
 
 const sendMobileTokenURL = 'tokenDevice/';
@@ -31,6 +32,7 @@ const getCarOwnersRequestsURL = 'ExcludeRequest/';
 const acceptMaintenanceAppointmentURL = 'CarMaintenance/';
 const acceptPriceMaintenanceAppointmentURL = 'AcceptPriceDealMaintenance/';
 const cancelRequestURL = 'FinishedMaintenance/';
+const getAvailableTowCarURL = 'AddTowRequest/get_distance_for_all_cars/';
 
 //        Tow Car End Points
 const citiesURL = 'City/';

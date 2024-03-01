@@ -15,20 +15,19 @@ class RequestTowCarCubit extends Cubit<RequestTowCarState> {
   static RequestTowCarCubit get(context) => BlocProvider.of(context);
   late LocationData locationData;
   List availableTowCars = [];
-  LatLng currentLocation = LatLng(0, 0);
+  LatLng currentLocation = const LatLng(0, 0);
   late List userCars;
-
   String? selectedCarName;
   String? selectedWorkshopName;
   int? selectedCar;
   int? selectedWorkshop;
-
   List<String> userCarsNames = [];
   List<String> userCarsIds = [];
   List<String> userCarsPlatesNumber = [];
   List<String> userCarsImages = [];
   List workshops = [];
   List<String> workshopsNames = [];
+  List<Marker> markers = [];
   LatLng destinationLocation = const LatLng(0, 0);
   void getUserCars() async {
     String? token = CacheHelper.getString(key: 'token');
@@ -86,7 +85,6 @@ class RequestTowCarCubit extends Cubit<RequestTowCarState> {
     emit(UpdateSelectedWorkshopState());
   }
 
-  List<Marker> markers = [];
   Future<void>? createTowCarRequest({
     required int carId,
     required LatLng currentLocation,
@@ -94,15 +92,50 @@ class RequestTowCarCubit extends Cubit<RequestTowCarState> {
   }) async {
     emit(CreateTowCarRequestLoadingState());
     String? token = CacheHelper.getString(key: 'token');
+    print('=============');
+    print(token);
+    print('=============');
+    print(carId);
+    print(currentLocation);
+    print(destinationLocation);
+    print(destinationLocation.longitude);
+
     FormData formData = FormData.fromMap({
-      'currentLocation': currentLocation,
-      'destination': destinationLocation,
-      'requestType': 2
+      'currentLocation':
+          '${currentLocation.latitude},${currentLocation.longitude}',
+      'destination':
+          '${destinationLocation.latitude},${destinationLocation.longitude}',
+      'requestType': 2,
+      'carsId': carId,
     });
-    final response = DioHelper.postForm(createTowRequestURL,
-        data: formData, token: 'JWT $token');
-    print(response);
-    emit(CreateTowCarRequestSuccessState(locationData));
+    try {
+      final response = DioHelper.postForm(createTowRequestURL,
+          data: formData, token: 'JWT $token');
+      print(response);
+      emit(CreateTowCarRequestSuccessState(response));
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(CreateTowCarRequestErrorState(error.message));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(CreateTowCarRequestErrorState(error.message));
+      } else if (error.response != null) {
+        switch (error.response!.statusCode) {
+          case 400:
+            emit(CreateTowCarRequestErrorState(error.message));
+            break;
+          case 401:
+            emit(CreateTowCarRequestErrorState(error.message));
+            break;
+          case 404:
+            emit(CreateTowCarRequestErrorState(error.message));
+            break;
+          default:
+            emit(CreateTowCarRequestErrorState(error.message));
+        }
+      } else {
+        emit(CreateTowCarRequestErrorState(error.message));
+      }
+    }
   }
 
   Future<void>? getCurrentLocation() async {
@@ -142,11 +175,64 @@ class RequestTowCarCubit extends Cubit<RequestTowCarState> {
   }
 
   Future<void>? getAvailableTowCars() async {
-    emit(GetCurrentLocationLoadingState());
-    final LocationData locationData =
-        await LocationService.getCurrentLocation();
-    currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
-    emit(GetCurrentLocationSuccessState(locationData));
+    emit(GetAvailableTowCarsLoadingState());
+    String? token = CacheHelper.getString(key: 'token');
+    FormData formData = FormData.fromMap({
+      'currentLocation':
+          '${currentLocation.latitude},${currentLocation.longitude}'
+    });
+    try {
+      final response = await DioHelper.get(
+        getAvailableTowCarURL,
+        token: 'JWT $token',
+        formData: formData,
+      );
+      print(response);
+      availableTowCars = response.data;
+
+      for (Map<String, dynamic> towCar in availableTowCars) {
+        List<String> splitValues = towCar['location'].split(',');
+        double latitude = double.parse(splitValues[0]);
+        double longitude = double.parse(splitValues[1]);
+        markers.add(Marker(
+          point: LatLng(latitude, longitude),
+          child: Transform.translate(
+            offset: const Offset(-35, -50),
+            child: const Icon(
+              Icons.fire_truck_sharp,
+              size: 35,
+              color: AppColors.greyColor,
+            ),
+          ),
+        ));
+      }
+      print(markers);
+      emit(GetAvailableTowCarsSuccessState(locationData));
+    } on DioException catch (error) {
+      if (error.type == DioExceptionType.connectionTimeout) {
+        emit(GetAvailableTowCarsErrorState(error.message));
+      } else if (error.type == DioExceptionType.receiveTimeout) {
+        emit(GetAvailableTowCarsErrorState(error.message));
+      } else if (error.response != null) {
+        switch (error.response!.statusCode) {
+          case 400:
+            emit(GetAvailableTowCarsErrorState(error.message));
+            break;
+          case 401:
+            emit(GetAvailableTowCarsErrorState(error.message));
+            break;
+          case 404:
+            emit(GetAvailableTowCarsErrorState(error.message));
+            break;
+          default:
+            emit(GetAvailableTowCarsErrorState(error.message));
+        }
+      } else {
+        emit(GetAvailableTowCarsErrorState(error.message));
+      }
+    } catch (error) {
+      emit(GetAvailableTowCarsErrorState(error.toString()));
+    }
   }
 
   void getDestinationPoint(TapPosition tapPosition, LatLng newLocation) async {

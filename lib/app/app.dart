@@ -7,6 +7,7 @@ import 'package:auto_care/core/services/location.dart';
 import 'package:auto_care/view/common/cubits/register/parts_supplier/register_parts_supplier_cubit.dart';
 import 'package:auto_care/view/common/cubits/register/workshop_owner/register_workshop_owner_cubit.dart';
 import 'package:auto_care/view/users/car_owner/cubits/main_page_cubit/main_page_cubit.dart';
+import 'package:auto_care/view/users/car_owner/cubits/request_tow_car/request_tow_car_cubit.dart';
 import 'package:get/get.dart';
 
 class MyApp extends StatelessWidget {
@@ -31,13 +32,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) => RegisterWorkshopOwnerCubit()
               ..getOrigins()
-              ..getSpecialists())
+              ..getSpecialists()),
+        BlocProvider(create: (context) => RequestTowCarCubit()..getUserCars())
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) {},
         builder: (context, state) {
           LocationService.checkPermission();
-          Widget route = const CarOwnerMainPage();
+          Widget route = const LoginPage();
 
           // if (!isLoggedIn) {
           //   route = LoginPage();
