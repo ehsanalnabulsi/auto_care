@@ -1,6 +1,6 @@
 import 'package:auto_care/core/constant/imports.dart';
-import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/car_owner_request_details_page.dart';
-import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/request_tow_car_pages/request_tow_car_main_page/request_tow_car_page.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/car_owner_requests_main_page/car_owner_request_details_page.dart';
+import 'package:auto_care/view/users/car_owner/screens/car_owner_requests/request_tow_car_pages/create_tow_car_request/create_tow_car_request.dart';
 import 'package:auto_care/view/users/workshop_owner/screens/workshop_owner_requests/workshop_owner_request_details/workshop_owner_request_details_page.dart';
 import 'package:get/get.dart';
 
@@ -118,7 +118,7 @@ List<GetPage<dynamic>> routes = [
       page: () => const CarOwnerRequestDetailsPage()),
   GetPage(
       name: CarOwnerRoutes.towCarRequest,
-      page: () => const RequestTowCarPage()),
+      page: () => const CreateTowCarRequest()),
 
   //           Workshop Owner Pages
   GetPage(

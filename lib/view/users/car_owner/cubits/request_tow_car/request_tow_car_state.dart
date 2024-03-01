@@ -21,6 +21,18 @@ class CreateTowCarRequestSuccessState extends RequestTowCarState {
   CreateTowCarRequestSuccessState(this.locationData);
 }
 
+class GetUserCarsLoadingState extends RequestTowCarState {}
+
+class GetUserCarsSuccessState extends RequestTowCarState {}
+
+class GetUserCarsErrorState extends RequestTowCarState {}
+
+class GetWorkshopsByBrandIdLoadingState extends RequestTowCarState {}
+
+class GetWorkshopsByBrandIdSuccessState extends RequestTowCarState {}
+
+class GetWorkshopsByBrandIdErrorState extends RequestTowCarState {}
+
 class CreateTowCarRequestErrorState extends RequestTowCarState {}
 
 class GetDestinationPointLoadingState extends RequestTowCarState {}
@@ -31,3 +43,37 @@ class GetDestinationPointSuccessState extends RequestTowCarState {
 }
 
 class GetDestinationPointErrorState extends RequestTowCarState {}
+
+
+
+
+class CreateMaintenanceRequestInitial extends RequestTowCarState {}
+
+
+class UpdateSelectedWorkshopState extends RequestTowCarState {}
+
+class GetWorkshopsLoadingState extends RequestTowCarState {}
+
+class GetWorkshopsSuccessState extends RequestTowCarState {
+  final dynamic response;
+  GetWorkshopsSuccessState(this.response);
+}
+
+class GetWorkshopsErrorState extends RequestTowCarState {
+  final String? error;
+  GetWorkshopsErrorState(this.error);
+}
+
+class CreateMaintenanceRequestLoadingState
+    extends RequestTowCarState {}
+
+class CreateMaintenanceRequestSuccessState
+    extends RequestTowCarState {
+  final dynamic response;
+  CreateMaintenanceRequestSuccessState(this.response);
+}
+
+class CreateMaintenanceRequestErrorState extends RequestTowCarState {
+  final DioException? error;
+  CreateMaintenanceRequestErrorState(this.error);
+}

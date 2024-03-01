@@ -274,9 +274,7 @@ class CarOwnerRequestDetailsPage extends StatelessWidget {
                                         'Cost: ',
                                         style: theme.titleMedium,
                                       ),
-                                      Text(
-                                          requestDetails['cost'].toString() ??
-                                              '--:--   ',
+                                      Text(requestDetails['cost'].toString(),
                                           style: theme.titleMedium),
                                     ])))),
                       ),

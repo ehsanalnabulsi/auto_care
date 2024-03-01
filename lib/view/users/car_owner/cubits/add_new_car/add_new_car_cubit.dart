@@ -18,7 +18,6 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
   late List<String> brandsNames;
   late int selectedOrigin;
   late int selectedBrand;
-
   XFile? pickedAvatar;
   dynamic avatarPath;
 
@@ -106,7 +105,7 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
     required int brand,
     required int model,
   }) async {
-    FormData addCarFormData = FormData.fromMap({
+    FormData formData = FormData.fromMap({
       'plateNumber': plateNumber,
       'carBrand': brand,
       'carModel': model,
@@ -119,7 +118,7 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
     try {
       emit(AddNewCarLoadingState());
       final response = await DioHelper.postForm(addNewCarURL,
-          data: addCarFormData, token: 'JWT $token');
+          data: formData, token: 'JWT $token');
 
       emit(AddNewCarSuccessState(response));
     } on DioException catch (error) {
@@ -149,5 +148,3 @@ class AddNewCarCubit extends Cubit<AddNewCarState> {
     }
   }
 }
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxNjMxMjU1NiwiaWF0IjoxNzA3NjcyNTU2LCJqdGkiOiI5YzM4MDU3NjhhOTA0MmE2ODEyNjg2NjE1ZDY5MzJmOSIsInVzZXJfaWQiOjQyfQ.IcG0fAjU3ib5FGQgRDS9gb8QcOiJ9VQdDk8XJfzJiiY
